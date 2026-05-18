@@ -1,0 +1,63 @@
+# Build and deploy the SQL Cor documentation site to GitHub Pages.
+#
+# Triggers:
+#   - Every push to `main`
+#   - Manual run via the Actions tab (workflow_dispatch)
+#
+# Pipeline:
+#   1. `build` job: checks out the repo, installs dependencies, runs
+#      `npm run build`, uploads the resulting `dist/` as a Pages
+#      artifact.
+#   2. `deploy` job: depends on `build`, publishes the artifact to
+#      GitHub Pages.
+#
+# The site is served at the custom domain configured in `public/CNAME`
+# (sql.opuscor.com). DNS is managed outside this workflow.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissions required by the official Astro action and Pages deploy.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Cancel in-progress deploys when a new commit lands on main.
+# We never want two deployments racing each other.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install, build, and upload site artifact
+        uses: withastro/action@v6
+        # Default behavior is fine for our project:
+        #   - path: .       (repo root)
+        #   - node-version: 24
+        #   - package-manager: auto-detected from package-lock.json
+        #   - build-cmd: npm run build
+        #   - out-dir: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
