@@ -1,0 +1,44 @@
+---
+/**
+ * Document metadata footer.
+ *
+ * Renders at the bottom of every document page. Shows three facts:
+ *   - Document version (from frontmatter)
+ *   - Product version this URL is serving (from URL)
+ *   - Last updated date (from frontmatter, formatted as DD Month YYYY)
+ *
+ * Plus an Edit on GitHub link if a repo URL is configured.
+ *
+ * Styles live in src/styles/global.css under .opuscor-doc-footer.
+ */
+import { formatDate } from '../lib/format-date';
+
+interface Props {
+  documentVersion: string;
+  productVersion: string;
+  lastUpdated?: string;
+  editUrl?: string;
+}
+
+const { documentVersion, productVersion, lastUpdated, editUrl } = Astro.props;
+---
+
+<footer class="opuscor-doc-footer">
+  <span class="opuscor-doc-footer-item">Document <b>v{documentVersion}</b></span>
+  <span class="opuscor-doc-footer-divider">·</span>
+  <span class="opuscor-doc-footer-item">Applies to SQL Cor <b>{productVersion}</b></span>
+  {lastUpdated && (
+    <>
+      <span class="opuscor-doc-footer-divider">·</span>
+      <span class="opuscor-doc-footer-item">Last updated <b>{formatDate(lastUpdated)}</b></span>
+    </>
+  )}
+  {editUrl && (
+    <>
+      <span class="opuscor-doc-footer-divider">·</span>
+      <a class="opuscor-doc-footer-item" href={editUrl} style="color: var(--opuscor-accent);">
+        Edit on GitHub →
+      </a>
+    </>
+  )}
+</footer>

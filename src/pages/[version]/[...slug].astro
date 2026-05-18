@@ -1,35 +1,31 @@
 ---
 /**
- * Dynamic document router.
+ * Dynamic document router (Phase 2 — integrated with Starlight layout).
  *
- * Resolves URLs of the form /vX.Y/some/slug/ to the correct
- * document file using the algorithm in ARCHITECTURE.md section 4.
- *
- * Returns a 404 page (via Astro's redirect to /404) when no
- * version of the document matches the requested product version.
+ * Same resolution algorithm as Phase 0 (ARCHITECTURE.md §4), but the
+ * output now uses Starlight's <StarlightPage> component so each
+ * document gets the full layout: top nav, sidebar, search button,
+ * theme toggle, right-rail TOC, breadcrumbs, mobile drawer.
  */
-// Import design tokens so this stub page picks up brand colors
-// even though it doesn't use the full Starlight layout yet.
-// Phase 2 replaces this entire page with Starlight layout components.
-import '../../styles/tokens.css';
-
 import { PRODUCT_VERSIONS } from '../../lib/product-versions';
 import { listAllDocs } from '../../lib/doc-loader';
 import { resolveDocumentVersion } from '../../lib/version-resolver';
-import fs from 'node:fs';
-import path from 'node:path';
+import { buildEntryId, getSqlcorEntry } from '../../lib/get-doc-content';
+import { render } from 'astro:content';
 
-export function getStaticPaths() {
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import DocFooter from '../../components/DocFooter.astro';
+import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
+import VersionBanner from '../../components/VersionBanner.astro';
+
+export async function getStaticPaths() {
   const docs = listAllDocs();
-  const paths: { params: { version: string; slug: string }; props: any }[] = [];
+  const paths = [];
 
   for (const product of PRODUCT_VERSIONS) {
     for (const doc of docs) {
       const resolvedVersion = resolveDocumentVersion(product.id, doc.versions);
       if (!resolvedVersion) continue;
-
-      const filePath = path.join(doc.folderPath, `${resolvedVersion}.md`);
-      const content = fs.readFileSync(filePath, 'utf-8');
 
       paths.push({
         params: { version: product.id, slug: doc.slug },
@@ -37,7 +33,6 @@ export function getStaticPaths() {
           productVersion: product.id,
           documentVersion: resolvedVersion,
           slug: doc.slug,
-          rawContent: content,
           hasUkTranslation: doc.ukVersions.includes(resolvedVersion),
         },
       });
@@ -47,40 +42,94 @@ export function getStaticPaths() {
   return paths;
 }
 
-const { productVersion, documentVersion, slug, rawContent, hasUkTranslation } = Astro.props;
+const { productVersion, documentVersion, slug, hasUkTranslation } = Astro.props;
+
+const activeLang: 'en' | 'uk' =
+  Astro.url.searchParams.get('lang') === 'uk' && hasUkTranslation ? 'uk' : 'en';
+
+const enEntryId = buildEntryId(slug, documentVersion, 'en');
+const enEntry = await getSqlcorEntry(enEntryId);
+
+if (!enEntry) {
+  throw new Error(`Document not found: ${enEntryId}`);
+}
+
+const ukEntryId = hasUkTranslation
+  ? buildEntryId(slug, documentVersion, 'uk')
+  : null;
+const ukEntry = ukEntryId ? await getSqlcorEntry(ukEntryId) : null;
+
+const { Content: ContentEn, headings } = await render(enEntry);
+const ukRendered = ukEntry ? await render(ukEntry) : null;
+
+const pageTitle = enEntry.data.title;
+const pageDescription = enEntry.data.description ?? '';
+const defaultActiveLang = activeLang;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>{slug} — SQL Cor {productVersion}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body
-    style="background: var(--opuscor-bg); color: var(--opuscor-tx); min-height: 100vh; margin: 0;"
-  >
-    <main
-      style="font-family: var(--opuscor-ff-sans); padding: 2rem; max-width: 720px; margin: 0 auto;"
-    >
-      <p
-        style={`opacity: 0.6; font-family: var(--opuscor-ff-mono); font-size: var(--opuscor-fz-xs);`}
-      >
-        ROUTER OK — Phase 0 stub layout
-      </p>
-      <h1>{slug}</h1>
-      <p>
-        Requested SQL Cor: <strong>{productVersion}</strong> · Serving
-        document version <strong>{documentVersion}</strong>
-        {hasUkTranslation && <em>· UK translation available</em>}
-      </p>
-      <hr />
-      <pre
-        style="white-space: pre-wrap; background: var(--opuscor-surf2); color: var(--opuscor-tx); padding: 1rem; border-radius: var(--opuscor-r-4); border: 1px solid var(--opuscor-bdr); font-family: var(--opuscor-ff-mono); font-size: var(--opuscor-fz-sm);"
-      >{rawContent}</pre>
-      <hr />
-      <p style={`font-size: var(--opuscor-fz-sm); opacity: 0.7; color: var(--opuscor-muted);`}>
-        Document {documentVersion} · Applies to SQL Cor {productVersion}
-      </p>
-    </main>
-  </body>
-</html>
+<StarlightPage
+  frontmatter={{
+    title: pageTitle,
+    description: pageDescription,
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 3,
+    },
+    pagefind: true,
+  }}
+  headings={headings}
+>
+  <VersionBanner productVersion={productVersion} slug={slug} />
+
+  <div class="opuscor-page-title-row">
+    <LanguageSwitcher
+      productVersion={productVersion}
+      slug={slug}
+      hasUkTranslation={hasUkTranslation}
+      activeLang={defaultActiveLang}
+    />
+  </div>
+
+  <div data-opuscor-lang="en" hidden={defaultActiveLang !== 'en'}>
+    <ContentEn />
+    <DocFooter
+      documentVersion={enEntry.data.document_version}
+      productVersion={productVersion}
+      lastUpdated={enEntry.data.last_updated}
+    />
+  </div>
+
+  {ukRendered && ukEntry && (
+    <div data-opuscor-lang="uk" hidden={defaultActiveLang !== 'uk'}>
+      <ukRendered.Content />
+      <DocFooter
+        documentVersion={ukEntry.data.document_version}
+        productVersion={productVersion}
+        lastUpdated={ukEntry.data.last_updated}
+      />
+    </div>
+  )}
+</StarlightPage>
+
+{hasUkTranslation && (
+  <script is:inline>
+    (function () {
+      if (new URLSearchParams(location.search).get('lang') !== 'uk') return;
+      document.querySelectorAll('[data-opuscor-lang]').forEach(function (el) {
+        el.hidden = el.getAttribute('data-opuscor-lang') !== 'uk';
+      });
+      document.querySelectorAll('.opuscor-lang-opt').forEach(function (el) {
+        var isUk = el.textContent.trim() === 'UK';
+        el.setAttribute('aria-current', isUk ? 'true' : 'false');
+      });
+    })();
+  </script>
+)}
+
+<style is:global>
+  .opuscor-page-title-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: calc(-1 * var(--opuscor-s-4)) 0 var(--opuscor-s-6);
+  }
+</style>

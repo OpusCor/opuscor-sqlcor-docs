@@ -1,6 +1,25 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import remarkDirective from 'remark-directive';
+import { remarkOpuscorCallouts } from './src/lib/remark-opuscor-callouts';
+
+/** Append Opuscor remark plugins after Starlight's own markdown setup. */
+function opuscorMarkdown() {
+  return {
+    name: 'opuscor-markdown',
+    hooks: {
+      'astro:config:setup': ({ config, updateConfig }) => {
+        const existing = config.markdown?.remarkPlugins ?? [];
+        updateConfig({
+          markdown: {
+            remarkPlugins: [...existing, remarkDirective, remarkOpuscorCallouts],
+          },
+        });
+      },
+    },
+  };
+}
 
 export default defineConfig({
   site: 'https://sql.opuscor.com',
@@ -17,10 +36,6 @@ export default defineConfig({
       title: 'SQL Cor',
       description: 'Secure SQL Workbench for Creatio',
 
-      // The site UI is English-only. Per-document translations are
-      // handled by our custom router via ?lang=uk, not by Starlight's
-      // i18n. We do NOT configure `defaultLocale` or `locales`.
-
       customCss: [
         './src/styles/tokens.css',
         './src/styles/starlight-overrides.css',
@@ -29,20 +44,22 @@ export default defineConfig({
 
       components: {
         Head: './src/components/Head.astro',
+        SiteTitle: './src/components/SiteTitle.astro',
       },
 
-      // Phase 0: minimal sidebar. Phase 2 replaces this with a
-      // brand-styled sidebar that reads from product-versions.ts.
       sidebar: [
         {
-          label: 'Phase 0 stubs',
+          label: 'Documentation',
           items: [
-            { label: 'Latest landing', link: '/v1.0/' },
+            { label: 'Overview', link: '/v1.0/' },
+            { label: 'Installation', link: '/v1.0/installation/' },
+            { label: 'User Guide', link: '/v1.0/user-guide/' },
           ],
         },
       ],
 
       social: [],
     }),
+    opuscorMarkdown(),
   ],
 });

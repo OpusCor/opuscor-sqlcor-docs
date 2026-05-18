@@ -1,0 +1,15 @@
+---
+/**
+ * Override of Starlight's SiteTitle component.
+ *
+ * Renders the [SQLCor] bracketed monospace logo, linking to the
+ * latest version's landing page.
+ *
+ * Brand styles defined in src/styles/global.css under .opuscor-logo.
+ */
+import { LATEST_VERSION } from '../lib/product-versions';
+---
+
+<a href={`/${LATEST_VERSION.id}/`} class="opuscor-logo" aria-label="SQL Cor docs home">
+  <span class="opuscor-logo-bracket">[</span>SQLCor<span class="opuscor-logo-bracket">]</span>
+</a>

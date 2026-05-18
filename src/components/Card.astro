@@ -1,0 +1,92 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  /** Optional inline SVG icon path data (24x24 viewBox), simple path d */
+  iconPath?: string;
+}
+
+const { href, title, description, iconPath } = Astro.props;
+---
+
+<a class="opuscor-card" href={href}>
+  {iconPath && (
+    <div class="opuscor-card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d={iconPath} />
+      </svg>
+    </div>
+  )}
+  <h3 class="opuscor-card-title">{title}</h3>
+  {description && <p class="opuscor-card-desc">{description}</p>}
+  <svg class="opuscor-card-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+</a>
+
+<style>
+  .opuscor-card {
+    display: block;
+    padding: var(--opuscor-s-7) var(--opuscor-s-6);
+    background: var(--opuscor-surf);
+    border: 1px solid var(--opuscor-bdr);
+    border-radius: var(--opuscor-r-5);
+    color: var(--opuscor-tx);
+    text-decoration: none;
+    transition: all var(--opuscor-t-base);
+    position: relative;
+    overflow: hidden;
+  }
+  .opuscor-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--opuscor-grad-brand);
+    opacity: 0;
+    transition: opacity var(--opuscor-t-base);
+  }
+  .opuscor-card:hover {
+    border-color: var(--opuscor-bdr-hi);
+    transform: translateY(-2px);
+    box-shadow: var(--opuscor-shadow);
+    text-decoration: none;
+  }
+  .opuscor-card:hover::before { opacity: 1; }
+  .opuscor-card-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--opuscor-accent-soft);
+    color: var(--opuscor-accent);
+    border-radius: var(--opuscor-r-4);
+    margin-bottom: var(--opuscor-s-5);
+    border: 1px solid var(--opuscor-note-bdr);
+  }
+  .opuscor-card-title {
+    font-size: var(--opuscor-fz-lg);
+    font-weight: 600;
+    margin: 0 0 var(--opuscor-s-2);
+    color: var(--opuscor-tx-strong);
+  }
+  .opuscor-card-desc {
+    color: var(--opuscor-muted);
+    font-size: var(--opuscor-fz-sm);
+    margin: 0;
+    line-height: var(--opuscor-lh-snug);
+  }
+  .opuscor-card-arrow {
+    position: absolute;
+    top: var(--opuscor-s-7);
+    right: var(--opuscor-s-6);
+    color: var(--opuscor-dim);
+    transition: transform var(--opuscor-t-base), color var(--opuscor-t-base);
+  }
+  .opuscor-card:hover .opuscor-card-arrow {
+    color: var(--opuscor-accent);
+    transform: translateX(2px);
+  }
+</style>

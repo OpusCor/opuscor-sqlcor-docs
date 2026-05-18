@@ -1,0 +1,74 @@
+---
+/**
+ * Landing-page hero block.
+ *
+ * Used on version landing pages (e.g. /v1.0/) and the docs homepage.
+ * Styles inlined here for now — global.css will absorb them if reused
+ * elsewhere.
+ */
+interface Props {
+  tagline?: string;
+  title: string;
+  description?: string;
+}
+
+const { tagline, title, description } = Astro.props;
+---
+
+<section class="opuscor-hero">
+  {tagline && <div class="opuscor-hero-tag">{tagline}</div>}
+  <h1 class="opuscor-hero-title">
+    <slot name="title">{title}</slot>
+  </h1>
+  {description && <p class="opuscor-hero-desc">{description}</p>}
+  <div class="opuscor-hero-actions">
+    <slot name="actions" />
+  </div>
+</section>
+
+<style>
+  .opuscor-hero {
+    padding: var(--opuscor-s-10) 0 var(--opuscor-s-8);
+    border-bottom: 1px solid var(--opuscor-bdr);
+    margin-bottom: var(--opuscor-s-10);
+  }
+  .opuscor-hero-tag {
+    font-family: var(--opuscor-ff-mono);
+    font-size: var(--opuscor-fz-xs);
+    color: var(--opuscor-accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: var(--opuscor-s-4);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--opuscor-s-3);
+    padding: var(--opuscor-s-2) var(--opuscor-s-4);
+    background: var(--opuscor-accent-soft);
+    border: 1px solid var(--opuscor-note-bdr);
+    border-radius: var(--opuscor-r-pill);
+  }
+  .opuscor-hero-title {
+    font-size: clamp(var(--opuscor-fz-3xl), 5vw, var(--opuscor-fz-5xl));
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    margin: 0 0 var(--opuscor-s-5);
+    line-height: 1.05;
+    color: var(--opuscor-tx-strong);
+  }
+  .opuscor-hero-desc {
+    color: var(--opuscor-muted);
+    font-size: var(--opuscor-fz-lg);
+    max-width: 640px;
+    margin: 0 0 var(--opuscor-s-6);
+    line-height: var(--opuscor-lh-snug);
+  }
+  .opuscor-hero-actions {
+    display: flex;
+    gap: var(--opuscor-s-3);
+    flex-wrap: wrap;
+  }
+  :global(.opuscor-hero-actions .opuscor-btn) {
+    padding: 0 var(--opuscor-s-6);
+    height: 44px;
+  }
+</style>

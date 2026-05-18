@@ -1,43 +1,118 @@
 ---
 /**
- * Landing page for a specific product version.
- * Phase 0: simple link list. Phase 2 turns this into a real hero page.
+ * Version landing page.
+ *
+ * Renders inside Starlight's layout (so users see sidebar, top nav,
+ * search) but with a custom landing hero and card grid of available
+ * documents — instead of the standard document layout.
  */
-import '../../styles/tokens.css';
-
 import { PRODUCT_VERSIONS } from '../../lib/product-versions';
 import { listAllDocs } from '../../lib/doc-loader';
 import { resolveDocumentVersion } from '../../lib/version-resolver';
 
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import Hero from '../../components/Hero.astro';
+import Card from '../../components/Card.astro';
+import CardGrid from '../../components/CardGrid.astro';
+
 export function getStaticPaths() {
-  return PRODUCT_VERSIONS.map((v) => ({ params: { version: v.id } }));
+  return PRODUCT_VERSIONS.map((v) => ({
+    params: { version: v.id },
+    props: { productVersion: v.id, productLabel: v.label },
+  }));
 }
 
-const { version } = Astro.params;
+const { productVersion, productLabel } = Astro.props;
+
 const docs = listAllDocs();
 const availableDocs = docs
   .map((doc) => ({
     slug: doc.slug,
-    resolved: resolveDocumentVersion(version!, doc.versions),
+    resolved: resolveDocumentVersion(productVersion, doc.versions),
   }))
   .filter((d) => d.resolved !== null);
+
+const ICONS: Record<string, string> = {
+  installation: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z',
+  'user-guide': 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+  'admin-guide': 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+};
+
+const TITLES: Record<string, string> = {
+  installation: 'Installation',
+  'user-guide': 'User Guide',
+  'admin-guide': 'Admin Guide',
+};
+
+const DESCRIPTIONS: Record<string, string> = {
+  installation: 'Get SQL Cor running in your Creatio instance.',
+  'user-guide': 'Every button, field, and behavior explained.',
+  'admin-guide': 'Access control, blacklist, audit logs, system settings.',
+};
 ---
 
-<html lang="en">
-  <head><meta charset="utf-8" /><title>SQL Cor {version} — Documentation</title></head>
-  <body
-    style="background: var(--opuscor-bg); color: var(--opuscor-tx); min-height: 100vh; margin: 0;"
+<StarlightPage
+  frontmatter={{
+    title: `SQL Cor ${productLabel}`,
+    description: 'Secure SQL Workbench for Creatio — documentation.',
+    template: 'splash',
+    pagefind: false,
+  }}
+>
+  <Hero
+    tagline={`SQL Cor · ${productLabel}`}
+    title="Secure SQL Workbench"
+    description="Direct database access for Creatio administrators — with role-based gates and a full audit trail."
   >
-    <main
-      style="font-family: var(--opuscor-ff-sans); padding: 2rem; max-width: 720px; margin: 0 auto;"
-    >
-    <h1>SQL Cor — {version}</h1>
-    <p>Documentation index. Phase 0 stub.</p>
-    <ul>
-      {availableDocs.map((d) => (
-        <li><a href={`/${version}/${d.slug}/`}>{d.slug}</a> <small>(doc {d.resolved})</small></li>
-      ))}
-    </ul>
-    </main>
-  </body>
-</html>
+    <a slot="actions" class="opuscor-btn opuscor-btn--primary" href={`/${productVersion}/installation/`}>
+      Get started →
+    </a>
+  </Hero>
+
+  <h2 style="margin-top: var(--opuscor-s-12); margin-bottom: var(--opuscor-s-6);">
+    Browse the documentation
+  </h2>
+
+  <CardGrid>
+    {availableDocs.map((doc) => (
+      <Card
+        href={`/${productVersion}/${doc.slug}/`}
+        title={TITLES[doc.slug] ?? doc.slug}
+        description={DESCRIPTIONS[doc.slug]}
+        iconPath={ICONS[doc.slug]}
+      />
+    ))}
+  </CardGrid>
+</StarlightPage>
+
+<style is:global>
+  .opuscor-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--opuscor-s-2);
+    padding: 0 var(--opuscor-s-5);
+    height: 44px;
+    border-radius: var(--opuscor-r-3);
+    border: 1px solid var(--opuscor-bdr2);
+    background: var(--opuscor-surf);
+    color: var(--opuscor-tx);
+    font-family: var(--opuscor-ff-sans);
+    font-size: var(--opuscor-fz-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--opuscor-t-fast);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .opuscor-btn--primary {
+    background: var(--opuscor-grad-brand);
+    border-color: transparent;
+    color: white;
+    font-weight: 600;
+  }
+  .opuscor-btn--primary:hover {
+    filter: brightness(1.08);
+    color: white;
+    text-decoration: none;
+  }
+</style>
