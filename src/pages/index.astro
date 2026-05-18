@@ -1,0 +1,7 @@
+---
+/**
+ * Root URL — redirects to the latest product version's landing page.
+ */
+import { LATEST_VERSION } from '../lib/product-versions';
+return Astro.redirect(`/${LATEST_VERSION.id}/`, 308);
+---

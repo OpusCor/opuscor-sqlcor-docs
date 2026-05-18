@@ -1,0 +1,9 @@
+{
+  "footer.documentVersion": "Документ v{version}",
+  "footer.appliesTo": "Стосується SQL Cor {version}",
+  "footer.lastUpdated": "Оновлено {date}",
+  "languageSwitcher.english": "EN",
+  "languageSwitcher.ukrainian": "UK",
+  "banner.olderVersion": "Ви переглядаєте документацію для SQL Cor {version}. Найновіша — {latest}.",
+  "banner.viewLatest": "Переглянути цю сторінку в найновішій версії"
+}

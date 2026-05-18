@@ -1,0 +1,35 @@
+---
+/**
+ * Landing page for a specific product version.
+ * Phase 0: simple link list. Phase 2 turns this into a real hero page.
+ */
+import { PRODUCT_VERSIONS } from '../../lib/product-versions';
+import { listAllDocs } from '../../lib/doc-loader';
+import { resolveDocumentVersion } from '../../lib/version-resolver';
+
+export function getStaticPaths() {
+  return PRODUCT_VERSIONS.map((v) => ({ params: { version: v.id } }));
+}
+
+const { version } = Astro.params;
+const docs = listAllDocs();
+const availableDocs = docs
+  .map((doc) => ({
+    slug: doc.slug,
+    resolved: resolveDocumentVersion(version!, doc.versions),
+  }))
+  .filter((d) => d.resolved !== null);
+---
+
+<html lang="en">
+  <head><meta charset="utf-8" /><title>SQL Cor {version} — Documentation</title></head>
+  <body style="font-family: system-ui; padding: 2rem; max-width: 720px; margin: 0 auto;">
+    <h1>SQL Cor — {version}</h1>
+    <p>Documentation index. Phase 0 stub.</p>
+    <ul>
+      {availableDocs.map((d) => (
+        <li><a href={`/${version}/${d.slug}/`}>{d.slug}</a> <small>(doc {d.resolved})</small></li>
+      ))}
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+---
+/**
+ * Dynamic document router.
+ *
+ * Resolves URLs of the form /vX.Y/some/slug/ to the correct
+ * document file using the algorithm in ARCHITECTURE.md section 4.
+ *
+ * Returns a 404 page (via Astro's redirect to /404) when no
+ * version of the document matches the requested product version.
+ */
+import { PRODUCT_VERSIONS } from '../../lib/product-versions';
+import { listAllDocs } from '../../lib/doc-loader';
+import { resolveDocumentVersion } from '../../lib/version-resolver';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const docs = listAllDocs();
+  const paths: { params: { version: string; slug: string }; props: any }[] = [];
+
+  for (const product of PRODUCT_VERSIONS) {
+    for (const doc of docs) {
+      const resolvedVersion = resolveDocumentVersion(product.id, doc.versions);
+      if (!resolvedVersion) continue;
+
+      const filePath = path.join(doc.folderPath, `${resolvedVersion}.md`);
+      const content = fs.readFileSync(filePath, 'utf-8');
+
+      paths.push({
+        params: { version: product.id, slug: doc.slug },
+        props: {
+          productVersion: product.id,
+          documentVersion: resolvedVersion,
+          slug: doc.slug,
+          rawContent: content,
+          hasUkTranslation: doc.ukVersions.includes(resolvedVersion),
+        },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { productVersion, documentVersion, slug, rawContent, hasUkTranslation } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{slug} — SQL Cor {productVersion}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <main style="font-family: system-ui; padding: 2rem; max-width: 720px; margin: 0 auto;">
+      <p style="opacity: 0.6; font-family: monospace; font-size: 12px;">
+        ROUTER OK — Phase 0 stub layout
+      </p>
+      <h1>{slug}</h1>
+      <p>
+        Requested SQL Cor: <strong>{productVersion}</strong> · Serving
+        document version <strong>{documentVersion}</strong>
+        {hasUkTranslation && <em>· UK translation available</em>}
+      </p>
+      <hr />
+      <pre style="white-space: pre-wrap; background: #f4f4f4; padding: 1rem; border-radius: 4px;">{rawContent}</pre>
+      <hr />
+      <p style="font-size: 13px; opacity: 0.7;">
+        Document {documentVersion} · Applies to SQL Cor {productVersion}
+      </p>
+    </main>
+  </body>
+</html>

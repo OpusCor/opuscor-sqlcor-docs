@@ -1,0 +1,9 @@
+{
+  "footer.documentVersion": "Document v{version}",
+  "footer.appliesTo": "Applies to SQL Cor {version}",
+  "footer.lastUpdated": "Last updated {date}",
+  "languageSwitcher.english": "EN",
+  "languageSwitcher.ukrainian": "UK",
+  "banner.olderVersion": "You are viewing docs for SQL Cor {version}. The latest version is {latest}.",
+  "banner.viewLatest": "View this page in the latest version"
+}

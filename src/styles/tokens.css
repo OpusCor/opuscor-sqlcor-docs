@@ -1,0 +1,27 @@
+/*
+ * Opuscor design tokens — PHASE 0 PLACEHOLDER.
+ * Phase 1 replaces this with the full Opuscor design system.
+ */
+:root {
+  --opuscor-bg: #0E1729;
+  --opuscor-bg2: #131D33;
+  --opuscor-surf: #182542;
+  --opuscor-bdr: #243352;
+  --opuscor-tx: #E8EEF8;
+  --opuscor-muted: #94A3B8;
+  --opuscor-accent: #4FC3FF;
+  --opuscor-accent-h: #29AAE2;
+  --opuscor-ff-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --opuscor-ff-mono: 'JetBrains Mono', Consolas, ui-monospace, monospace;
+}
+
+[data-theme='light'] {
+  --opuscor-bg: #F4F7FB;
+  --opuscor-bg2: #ECF1F8;
+  --opuscor-surf: #FFFFFF;
+  --opuscor-bdr: #DDE3EF;
+  --opuscor-tx: #0F172A;
+  --opuscor-muted: #475569;
+  --opuscor-accent: #0284C7;
+  --opuscor-accent-h: #0369A1;
+}
