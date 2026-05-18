@@ -4,7 +4,13 @@ import starlight from '@astrojs/starlight';
 import remarkDirective from 'remark-directive';
 import { remarkOpuscorCallouts } from './src/lib/remark-opuscor-callouts';
 
-/** Append Opuscor remark plugins after Starlight's own markdown setup. */
+/**
+ * Astro integration that appends Opuscor's remark plugins AFTER
+ * Starlight has registered its own, so Starlight cannot overwrite
+ * them.
+ *
+ * @returns {import('astro').AstroIntegration}
+ */
 function opuscorMarkdown() {
   return {
     name: 'opuscor-markdown',
@@ -49,11 +55,30 @@ export default defineConfig({
 
       sidebar: [
         {
-          label: 'Documentation',
+          label: 'Getting Started',
           items: [
-            { label: 'Overview', link: '/v1.0/' },
             { label: 'Installation', link: '/v1.0/installation/' },
+          ],
+        },
+        {
+          label: 'Using SQL Cor',
+          items: [
             { label: 'User Guide', link: '/v1.0/user-guide/' },
+            { label: 'Admin Guide', link: '/v1.0/admin-guide/' },
+          ],
+        },
+        {
+          label: 'Reference',
+          items: [
+            { label: 'Feature Reference', link: '/v1.0/reference/features/' },
+            { label: 'Message Reference', link: '/v1.0/reference/messages/' },
+            { label: 'Keyboard Shortcuts', link: '/v1.0/reference/shortcuts/' },
+          ],
+        },
+        {
+          label: 'Help',
+          items: [
+            { label: 'Troubleshooting', link: '/v1.0/troubleshooting/' },
           ],
         },
       ],

@@ -3,6 +3,14 @@
 Documentation site for SQL Cor, deployed to `sql.opuscor.com`.
 Stack: Astro + Starlight with custom per-document versioning.
 
+## For content authors
+
+If you want to add, edit, or translate documents, start here:
+**[Authoring Guide](./docs/CONTRIBUTING-CONTENT.md)**.
+
+It covers adding new documents, new versions, translations, working
+with images, writing style, and common pitfalls.
+
 ## Local development
 
 ```bash
@@ -34,29 +42,15 @@ If no version is ≤ 3.0, a 404 page appears.
 
 ## Adding a new page
 
-Create `src/content/sqlcor/your-new-page/v1.0.md` with frontmatter:
-
-```yaml
----
-title: Your Page Title
-description: One-line description.
-sidebar:
-  order: 5
-document_version: "1.0"
-last_updated: "2026-05-18"
----
-```
-
-The router picks it up automatically — no config to update.
+See [Authoring Guide → Adding a new document](./docs/CONTRIBUTING-CONTENT.md#adding-a-new-document).
 
 ## Adding a new version of an existing document
 
-```bash
-cp src/content/sqlcor/user-guide/v1.0.md src/content/sqlcor/user-guide/v3.0.md
-```
+See [Authoring Guide → Adding a new version](./docs/CONTRIBUTING-CONTENT.md#adding-a-new-version-of-an-existing-document).
 
-Edit the new file. Bump `document_version` in the frontmatter to
-match the filename.
+## Adding a translation
+
+See [Authoring Guide → Adding a translation](./docs/CONTRIBUTING-CONTENT.md#adding-a-translation).
 
 ## Adding a new product version
 
@@ -70,16 +64,6 @@ export const PRODUCT_VERSIONS = [
 ```
 
 The router will start serving `/v2.0/...` URLs immediately.
-
-## Adding a translation
-
-```bash
-cp src/content/sqlcor/user-guide/v1.0.md src/content/sqlcor/user-guide/v1.0.uk.md
-```
-
-Translate the body. Set `lang: uk` in the frontmatter. The
-translation appears at `/v1.0/user-guide/?lang=uk` (full UI in
-Phase 2+).
 
 ## Phase status
 

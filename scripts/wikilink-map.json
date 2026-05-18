@@ -1,0 +1,10 @@
+{
+  "INSTALLATION":        "/v1.0/installation/",
+  "USER_GUIDE":          "/v1.0/user-guide/",
+  "ADMIN_GUIDE":         "/v1.0/admin-guide/",
+  "FEATURE_REFERENCE":   "/v1.0/reference/features/",
+  "MESSAGE_REFERENCE":   "/v1.0/reference/messages/",
+  "KEYBOARD_SHORTCUTS":  "/v1.0/reference/shortcuts/",
+  "TROUBLESHOOTING":     "/v1.0/troubleshooting/",
+  "Troubleshooting":     "/v1.0/troubleshooting/"
+}
