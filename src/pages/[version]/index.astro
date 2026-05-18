@@ -3,6 +3,8 @@
  * Landing page for a specific product version.
  * Phase 0: simple link list. Phase 2 turns this into a real hero page.
  */
+import '../../styles/tokens.css';
+
 import { PRODUCT_VERSIONS } from '../../lib/product-versions';
 import { listAllDocs } from '../../lib/doc-loader';
 import { resolveDocumentVersion } from '../../lib/version-resolver';
@@ -23,7 +25,12 @@ const availableDocs = docs
 
 <html lang="en">
   <head><meta charset="utf-8" /><title>SQL Cor {version} — Documentation</title></head>
-  <body style="font-family: system-ui; padding: 2rem; max-width: 720px; margin: 0 auto;">
+  <body
+    style="background: var(--opuscor-bg); color: var(--opuscor-tx); min-height: 100vh; margin: 0;"
+  >
+    <main
+      style="font-family: var(--opuscor-ff-sans); padding: 2rem; max-width: 720px; margin: 0 auto;"
+    >
     <h1>SQL Cor — {version}</h1>
     <p>Documentation index. Phase 0 stub.</p>
     <ul>
@@ -31,5 +38,6 @@ const availableDocs = docs
         <li><a href={`/${version}/${d.slug}/`}>{d.slug}</a> <small>(doc {d.resolved})</small></li>
       ))}
     </ul>
+    </main>
   </body>
 </html>

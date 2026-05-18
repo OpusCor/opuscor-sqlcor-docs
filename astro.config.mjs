@@ -6,6 +6,12 @@ export default defineConfig({
   site: 'https://sql.opuscor.com',
   output: 'static',
 
+  // We provide a custom informative 404 at src/pages/404.astro that
+  // lists available document versions when a user requests a version
+  // that does not exist. This intentionally overrides Starlight's
+  // default 404. Astro emits a build warning about the duplicate
+  // route — this is expected behavior, not a bug.
+
   integrations: [
     starlight({
       title: 'SQL Cor',
@@ -18,7 +24,12 @@ export default defineConfig({
       customCss: [
         './src/styles/tokens.css',
         './src/styles/starlight-overrides.css',
+        './src/styles/global.css',
       ],
+
+      components: {
+        Head: './src/components/Head.astro',
+      },
 
       // Phase 0: minimal sidebar. Phase 2 replaces this with a
       // brand-styled sidebar that reads from product-versions.ts.

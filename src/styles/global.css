@@ -1,0 +1,258 @@
+/*
+ * SQL Cor — Global base styles
+ *
+ * Loaded after tokens.css and starlight-overrides.css. Contains:
+ *   - Base body/document setup
+ *   - Selection color
+ *   - Scrollbar styling
+ *   - Document footer metadata strip
+ *   - Version banner
+ *   - Per-page language switcher
+ *   - Callout styles for our 5 semantic variants
+ *
+ * This file does NOT define page layout — Starlight handles that.
+ * It only theme-skins what Starlight renders.
+ */
+
+/* ====== Body / page ====== */
+body {
+  background:
+    radial-gradient(800px 400px at 80% 0%, var(--opuscor-accent-2-soft), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, var(--opuscor-accent-soft), transparent 60%),
+    var(--opuscor-bg);
+  font-family: var(--opuscor-ff-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*::selection {
+  background: var(--opuscor-accent-soft);
+  color: var(--opuscor-tx);
+}
+
+/* ====== Scrollbar ====== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--opuscor-surf3) transparent;
+}
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--opuscor-surf3);
+  border-radius: var(--opuscor-r-pill);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--opuscor-bdr-hi); background-clip: padding-box; }
+
+/* ====== Inline code ====== */
+:not(pre) > code {
+  font-family: var(--opuscor-ff-mono);
+  font-size: 0.88em;
+  padding: 2px 6px;
+  background: var(--opuscor-surf2);
+  color: var(--opuscor-accent);
+  border: 1px solid var(--opuscor-bdr);
+  border-radius: var(--opuscor-r-1);
+}
+
+/* ====== Keyboard key ====== */
+kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 7px;
+  font-family: var(--opuscor-ff-mono);
+  font-size: var(--opuscor-fz-xs);
+  font-weight: 600;
+  color: var(--opuscor-tx);
+  background: var(--opuscor-surf2);
+  border: 1px solid var(--opuscor-bdr2);
+  border-bottom-width: 2px;
+  border-radius: var(--opuscor-r-2);
+  line-height: 1;
+}
+
+/* ============================================================
+ * OPUSCOR CALLOUTS
+ *
+ * Rendered by the remark-directive plugin (configured in Phase 3)
+ * from Obsidian-style syntax:
+ *
+ *   > [!note] Optional title
+ *   > Body text.
+ *
+ * Output HTML structure:
+ *
+ *   <aside class="opuscor-callout opuscor-callout--note">
+ *     <div class="opuscor-callout-icon">i</div>
+ *     <div class="opuscor-callout-body">
+ *       <div class="opuscor-callout-title">
+ *         <span class="opuscor-callout-label">Note</span> Title
+ *       </div>
+ *       <p>Body…</p>
+ *     </div>
+ *   </aside>
+ * ============================================================ */
+.opuscor-callout {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: var(--opuscor-s-4);
+  padding: var(--opuscor-s-5) var(--opuscor-s-6);
+  margin: var(--opuscor-s-6) 0;
+  border: 1px solid var(--opuscor-bdr);
+  border-left: 3px solid currentColor;
+  background: var(--opuscor-surf);
+  border-radius: var(--opuscor-r-0) var(--opuscor-r-4) var(--opuscor-r-4) var(--opuscor-r-0);
+}
+.opuscor-callout-icon {
+  font-family: var(--opuscor-ff-mono);
+  font-weight: 700;
+  font-size: var(--opuscor-fz-lg);
+  color: currentColor;
+  line-height: 1.4;
+}
+.opuscor-callout-body { color: var(--opuscor-tx); }
+.opuscor-callout-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--opuscor-tx-strong);
+  font-family: var(--opuscor-ff-sans);
+  font-size: var(--opuscor-fz-base);
+  display: flex;
+  align-items: center;
+  gap: var(--opuscor-s-3);
+}
+.opuscor-callout-label {
+  font-family: var(--opuscor-ff-mono);
+  font-size: var(--opuscor-fz-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: currentColor;
+  font-weight: 600;
+}
+.opuscor-callout p { margin: 0; color: var(--opuscor-muted); font-size: var(--opuscor-fz-sm); line-height: var(--opuscor-lh-base); }
+.opuscor-callout p + p { margin-top: var(--opuscor-s-2); }
+
+.opuscor-callout--note      { color: var(--opuscor-note-fg);      background: var(--opuscor-note-bg); }
+.opuscor-callout--tip       { color: var(--opuscor-tip-fg);       background: var(--opuscor-tip-bg); }
+.opuscor-callout--warning   { color: var(--opuscor-warning-fg);   background: var(--opuscor-warning-bg); }
+.opuscor-callout--danger    { color: var(--opuscor-danger-fg);    background: var(--opuscor-danger-bg); }
+.opuscor-callout--important { color: var(--opuscor-important-fg); background: var(--opuscor-important-bg); }
+
+/* ============================================================
+ * DOC FOOTER METADATA
+ *
+ * Rendered at the bottom of every document page by the
+ * DocFooter.astro component (Phase 2). Shows:
+ *   Document v1.0 · Applies to SQL Cor v3.0 · Last updated …
+ * ============================================================ */
+.opuscor-doc-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--opuscor-s-3) var(--opuscor-s-5);
+  padding: var(--opuscor-s-5) var(--opuscor-s-6);
+  background: var(--opuscor-surf2);
+  border: 1px solid var(--opuscor-bdr);
+  border-radius: var(--opuscor-r-4);
+  font-family: var(--opuscor-ff-mono);
+  font-size: var(--opuscor-fz-xs);
+  color: var(--opuscor-muted);
+  margin: var(--opuscor-s-10) 0 var(--opuscor-s-6);
+}
+.opuscor-doc-footer-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--opuscor-s-2);
+}
+.opuscor-doc-footer-item b {
+  color: var(--opuscor-tx);
+  font-weight: 600;
+}
+.opuscor-doc-footer-divider { color: var(--opuscor-dim); }
+
+/* ============================================================
+ * VERSION BANNER
+ *
+ * Appears at the top of pages that serve a non-latest product
+ * version. Rendered by VersionBanner.astro (Phase 4).
+ * ============================================================ */
+.opuscor-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--opuscor-s-4);
+  padding: var(--opuscor-s-4) var(--opuscor-s-6);
+  background: var(--opuscor-warning-bg);
+  border: 1px solid var(--opuscor-warning-bdr);
+  border-radius: var(--opuscor-r-4);
+  color: var(--opuscor-tx);
+  font-size: var(--opuscor-fz-sm);
+  margin: 0 0 var(--opuscor-s-6);
+}
+.opuscor-banner-icon {
+  color: var(--opuscor-warning-fg);
+  font-family: var(--opuscor-ff-mono);
+  font-weight: 700;
+  font-size: var(--opuscor-fz-md);
+  flex-shrink: 0;
+}
+.opuscor-banner-text { flex: 1; color: var(--opuscor-muted); }
+.opuscor-banner-text b { color: var(--opuscor-tx); font-weight: 600; }
+.opuscor-banner-link { color: var(--opuscor-warning-fg); font-weight: 500; }
+
+/* ============================================================
+ * PER-PAGE LANGUAGE SWITCHER
+ *
+ * Inline switcher next to the page title. Rendered by
+ * LanguageSwitcher.astro (Phase 4). Only mounts when the
+ * current document has a translation file.
+ * ============================================================ */
+.opuscor-lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--opuscor-s-1);
+  padding: 2px;
+  background: var(--opuscor-surf2);
+  border: 1px solid var(--opuscor-bdr);
+  border-radius: var(--opuscor-r-3);
+}
+.opuscor-lang-opt {
+  font-family: var(--opuscor-ff-mono);
+  font-size: var(--opuscor-fz-xs);
+  font-weight: 600;
+  padding: 4px var(--opuscor-s-2);
+  border-radius: var(--opuscor-r-2);
+  color: var(--opuscor-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: all var(--opuscor-t-fast);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+.opuscor-lang-opt:hover { color: var(--opuscor-tx); text-decoration: none; }
+.opuscor-lang-opt[aria-current='true'] {
+  background: var(--opuscor-surf);
+  color: var(--opuscor-accent);
+  box-shadow: var(--opuscor-shadow-sm);
+}
+
+/* ============================================================
+ * BRAND LOGO (used in Header override)
+ * ============================================================ */
+.opuscor-logo {
+  font-family: var(--opuscor-ff-mono);
+  font-weight: 700;
+  font-size: var(--opuscor-fz-md);
+  letter-spacing: -0.02em;
+  color: var(--opuscor-tx-strong);
+  display: inline-flex;
+  align-items: baseline;
+  text-decoration: none;
+}
+.opuscor-logo:hover { text-decoration: none; color: var(--opuscor-tx-strong); }
+.opuscor-logo .opuscor-logo-bracket { color: var(--opuscor-accent); }

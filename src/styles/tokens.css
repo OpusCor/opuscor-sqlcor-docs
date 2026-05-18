@@ -1,27 +1,232 @@
 /*
- * Opuscor design tokens — PHASE 0 PLACEHOLDER.
- * Phase 1 replaces this with the full Opuscor design system.
+ * SQL Cor — Design tokens (Phase 1)
+ *
+ * Single source of truth for all colors, spacing, type, radii,
+ * and motion values. Components and Starlight overrides read
+ * exclusively from these variables — no hardcoded brand values
+ * anywhere else.
+ *
+ * Two themes share the same token names:
+ *   - :root / [data-theme="dark"]  — default
+ *   - [data-theme="light"]         — explicit opt-in
+ *
+ * Theme is toggled by setting `data-theme` on <html>. Starlight
+ * does this automatically based on its theme switcher.
  */
-:root {
-  --opuscor-bg: #0E1729;
-  --opuscor-bg2: #131D33;
-  --opuscor-surf: #182542;
-  --opuscor-bdr: #243352;
-  --opuscor-tx: #E8EEF8;
-  --opuscor-muted: #94A3B8;
-  --opuscor-accent: #4FC3FF;
-  --opuscor-accent-h: #29AAE2;
-  --opuscor-ff-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --opuscor-ff-mono: 'JetBrains Mono', Consolas, ui-monospace, monospace;
+
+/* ====== DARK (default) ====== */
+:root,
+[data-theme='dark'] {
+  /* Surfaces */
+  --opuscor-bg:        #0E1729;
+  --opuscor-bg2:       #131D33;
+  --opuscor-surf:      #182542;
+  --opuscor-surf2:     #1E2A47;
+  --opuscor-surf3:     #243352;
+  --opuscor-surf-hi:   #2A3A5E;
+
+  /* Borders */
+  --opuscor-bdr:       #243352;
+  --opuscor-bdr2:      #2D3F66;
+  --opuscor-bdr-hi:    #3D5180;
+
+  /* Text */
+  --opuscor-tx:        #E8EEF8;
+  --opuscor-tx-strong: #FFFFFF;
+  --opuscor-muted:     #94A3B8;
+  --opuscor-dim:       #64748B;
+
+  /* Primary accent — brand cyan-blue (from product UI) */
+  --opuscor-accent:        #4FC3FF;
+  --opuscor-accent-h:      #29AAE2;
+  --opuscor-accent-soft:   rgba(79, 195, 255, 0.12);
+  --opuscor-accent-glow:   rgba(79, 195, 255, 0.35);
+
+  /* Secondary accent — decorative violet */
+  --opuscor-accent-2:      #A78BFA;
+  --opuscor-accent-2-h:    #8B5CF6;
+  --opuscor-accent-2-soft: rgba(167, 139, 250, 0.10);
+  --opuscor-accent-2-glow: rgba(167, 139, 250, 0.30);
+
+  /* Brand gradient */
+  --opuscor-grad-brand:      linear-gradient(135deg, #4FC3FF 0%, #A78BFA 100%);
+  --opuscor-grad-brand-soft: linear-gradient(135deg, rgba(79,195,255,0.12) 0%, rgba(167,139,250,0.12) 100%);
+
+  /* Semantic — callouts. Brighter in dark mode for clearer signal. */
+  --opuscor-note-fg:       #60D4FF;
+  --opuscor-note-bg:       rgba(79, 195, 255, 0.08);
+  --opuscor-note-bdr:      rgba(79, 195, 255, 0.35);
+
+  --opuscor-tip-fg:        #34D399;
+  --opuscor-tip-bg:        rgba(52, 211, 153, 0.10);
+  --opuscor-tip-bdr:       rgba(52, 211, 153, 0.40);
+
+  --opuscor-warning-fg:    #FBBF24;
+  --opuscor-warning-bg:    rgba(251, 191, 36, 0.10);
+  --opuscor-warning-bdr:   rgba(251, 191, 36, 0.40);
+
+  --opuscor-danger-fg:     #F87171;
+  --opuscor-danger-bg:     rgba(248, 113, 113, 0.10);
+  --opuscor-danger-bdr:    rgba(248, 113, 113, 0.40);
+
+  --opuscor-important-fg:  #C4B5FD;
+  --opuscor-important-bg:  rgba(196, 181, 253, 0.10);
+  --opuscor-important-bdr: rgba(196, 181, 253, 0.40);
+
+  /* Status (terminal-style indicators) */
+  --opuscor-ok:    #22C55E;
+  --opuscor-warn:  #F59E0B;
+  --opuscor-err:   #EF4444;
+  --opuscor-pend:  #94A3B8;
+
+  /* SQL syntax highlighting */
+  --opuscor-sx-key:     #4FC3FF;
+  --opuscor-sx-string:  #FBBF24;
+  --opuscor-sx-comment: #64748B;
+  --opuscor-sx-number:  #34D399;
+  --opuscor-sx-fn:      #C4B5FD;
+  --opuscor-sx-op:      #94A3B8;
+
+  /* Shadows */
+  --opuscor-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --opuscor-shadow:    0 4px 14px rgba(0, 0, 0, 0.35);
+  --opuscor-shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--opuscor-bdr);
+  --opuscor-shadow-glow: 0 0 0 4px var(--opuscor-accent-glow);
+
+  /* Page background — radial accent gradients */
+  --opuscor-hero-bg:
+    radial-gradient(800px 400px at 80% 0%, rgba(167, 139, 250, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(79, 195, 255, 0.10), transparent 60%),
+    var(--opuscor-bg);
 }
 
+/* ====== LIGHT ====== */
 [data-theme='light'] {
-  --opuscor-bg: #F4F7FB;
-  --opuscor-bg2: #ECF1F8;
-  --opuscor-surf: #FFFFFF;
-  --opuscor-bdr: #DDE3EF;
-  --opuscor-tx: #0F172A;
-  --opuscor-muted: #475569;
-  --opuscor-accent: #0284C7;
-  --opuscor-accent-h: #0369A1;
+  --opuscor-bg:        #F8FAFC;
+  --opuscor-bg2:       #F1F5F9;
+  --opuscor-surf:      #FFFFFF;
+  --opuscor-surf2:     #F8FAFC;
+  --opuscor-surf3:     #F1F5F9;
+  --opuscor-surf-hi:   #E2E8F0;
+
+  --opuscor-bdr:       #E2E8F0;
+  --opuscor-bdr2:      #CBD5E1;
+  --opuscor-bdr-hi:    #94A3B8;
+
+  --opuscor-tx:        #0F172A;
+  --opuscor-tx-strong: #020617;
+  --opuscor-muted:     #475569;
+  --opuscor-dim:       #94A3B8;
+
+  --opuscor-accent:        #0284C7;
+  --opuscor-accent-h:      #0369A1;
+  --opuscor-accent-soft:   rgba(2, 132, 199, 0.08);
+  --opuscor-accent-glow:   rgba(2, 132, 199, 0.20);
+
+  --opuscor-accent-2:      #7C3AED;
+  --opuscor-accent-2-h:    #6D28D9;
+  --opuscor-accent-2-soft: rgba(124, 58, 237, 0.06);
+  --opuscor-accent-2-glow: rgba(124, 58, 237, 0.15);
+
+  --opuscor-grad-brand:      linear-gradient(135deg, #0284C7 0%, #7C3AED 100%);
+  --opuscor-grad-brand-soft: linear-gradient(135deg, rgba(2,132,199,0.08) 0%, rgba(124,58,237,0.08) 100%);
+
+  --opuscor-note-fg:       #0369A1;
+  --opuscor-note-bg:       rgba(2, 132, 199, 0.06);
+  --opuscor-note-bdr:      rgba(2, 132, 199, 0.25);
+
+  --opuscor-tip-fg:        #15803D;
+  --opuscor-tip-bg:        rgba(34, 197, 94, 0.07);
+  --opuscor-tip-bdr:       rgba(34, 197, 94, 0.30);
+
+  --opuscor-warning-fg:    #B45309;
+  --opuscor-warning-bg:    rgba(245, 158, 11, 0.08);
+  --opuscor-warning-bdr:   rgba(245, 158, 11, 0.30);
+
+  --opuscor-danger-fg:     #B91C1C;
+  --opuscor-danger-bg:     rgba(239, 68, 68, 0.07);
+  --opuscor-danger-bdr:    rgba(239, 68, 68, 0.30);
+
+  --opuscor-important-fg:  #6D28D9;
+  --opuscor-important-bg:  rgba(168, 85, 247, 0.07);
+  --opuscor-important-bdr: rgba(168, 85, 247, 0.30);
+
+  --opuscor-ok:    #15803D;
+  --opuscor-warn:  #B45309;
+  --opuscor-err:   #B91C1C;
+  --opuscor-pend:  #64748B;
+
+  --opuscor-sx-key:     #0284C7;
+  --opuscor-sx-string:  #B45309;
+  --opuscor-sx-comment: #94A3B8;
+  --opuscor-sx-number:  #15803D;
+  --opuscor-sx-fn:      #7C3AED;
+  --opuscor-sx-op:      #475569;
+
+  --opuscor-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --opuscor-shadow:    0 4px 14px rgba(15, 23, 42, 0.08);
+  --opuscor-shadow-lg: 0 12px 32px -8px rgba(15, 23, 42, 0.12), 0 0 0 1px var(--opuscor-bdr);
+  --opuscor-shadow-glow: 0 0 0 4px var(--opuscor-accent-glow);
+
+  --opuscor-hero-bg:
+    radial-gradient(800px 400px at 80% 0%, rgba(124, 58, 237, 0.06), transparent 60%),
+    radial-gradient(900px 500px at 0% 100%, rgba(2, 132, 199, 0.06), transparent 60%),
+    var(--opuscor-bg);
+}
+
+/* ====== SCALES (theme-independent) ====== */
+:root {
+  /* Spacing — 4px base */
+  --opuscor-s-1:  4px;
+  --opuscor-s-2:  8px;
+  --opuscor-s-3:  12px;
+  --opuscor-s-4:  16px;
+  --opuscor-s-5:  20px;
+  --opuscor-s-6:  24px;
+  --opuscor-s-7:  28px;
+  --opuscor-s-8:  32px;
+  --opuscor-s-10: 40px;
+  --opuscor-s-12: 48px;
+  --opuscor-s-14: 56px;
+  --opuscor-s-16: 64px;
+  --opuscor-s-20: 80px;
+  --opuscor-s-24: 96px;
+
+  /* Type scale — 16px base, spacious */
+  --opuscor-fz-xs:   12px;
+  --opuscor-fz-sm:   14px;
+  --opuscor-fz-base: 16px;
+  --opuscor-fz-md:   17px;
+  --opuscor-fz-lg:   19px;
+  --opuscor-fz-xl:   22px;
+  --opuscor-fz-2xl:  28px;
+  --opuscor-fz-3xl:  36px;
+  --opuscor-fz-4xl:  48px;
+  --opuscor-fz-5xl:  64px;
+  --opuscor-fz-6xl:  80px;
+
+  /* Line heights */
+  --opuscor-lh-tight: 1.1;
+  --opuscor-lh-snug:  1.35;
+  --opuscor-lh-base:  1.7;
+  --opuscor-lh-loose: 1.8;
+
+  /* Radii — hybrid system */
+  --opuscor-r-0:    0;       /* callouts (border-left accent) */
+  --opuscor-r-1:    2px;     /* inline code */
+  --opuscor-r-2:    4px;     /* small badges */
+  --opuscor-r-3:    6px;     /* buttons */
+  --opuscor-r-4:    8px;     /* cards, dialogs */
+  --opuscor-r-5:    10px;    /* large cards */
+  --opuscor-r-6:    12px;    /* hero blocks */
+  --opuscor-r-pill: 999px;
+
+  /* Fonts */
+  --opuscor-ff-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --opuscor-ff-mono: 'JetBrains Mono', Consolas, ui-monospace, monospace;
+
+  /* Motion */
+  --opuscor-t-fast: 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --opuscor-t-base: 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --opuscor-t-slow: 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }

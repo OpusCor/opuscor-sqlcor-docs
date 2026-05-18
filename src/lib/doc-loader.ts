@@ -16,10 +16,10 @@ export interface DocInfo {
   ukVersions: string[];
 }
 
-const DOCS_ROOT = path.resolve('src/content/docs');
+const DOCS_ROOT = path.resolve('src/content/sqlcor');
 
 /**
- * Scans the docs directory and returns metadata about every
+ * Scans the sqlcor documents directory (`src/content/sqlcor`) and returns metadata about every
  * document folder. A document folder is any folder containing
  * at least one v*.md file.
  */

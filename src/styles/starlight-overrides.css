@@ -1,4 +1,119 @@
 /*
- * Starlight CSS variable overrides — PHASE 0 PLACEHOLDER.
- * Phase 2 maps every Starlight variable to an Opuscor token.
+ * Starlight CSS variable overrides
+ *
+ * Starlight exposes a documented set of CSS custom properties.
+ * This file maps every Starlight variable we care about to its
+ * Opuscor token equivalent. After this, Starlight's built-in
+ * components (sidebar, search, TOC, code blocks, mobile drawer)
+ * automatically render in the Opuscor brand.
+ *
+ * Reference: https://starlight.astro.build/guides/css-and-tailwind/
+ *
+ * We override at two scopes:
+ *   :root[data-theme='dark']   — dark mode
+ *   :root[data-theme='light']  — light mode
+ *
+ * Note: Starlight uses --sl-* prefix for its own variables.
  */
+
+/* ====== DARK ====== */
+:root[data-theme='dark'] {
+  /* Surfaces */
+  --sl-color-bg: var(--opuscor-bg);
+  --sl-color-bg-nav: var(--opuscor-bg2);
+  --sl-color-bg-sidebar: var(--opuscor-bg);
+  --sl-color-bg-inline-code: var(--opuscor-surf2);
+  --sl-color-bg-accent: var(--opuscor-accent);
+
+  /* Borders */
+  --sl-color-hairline-light: var(--opuscor-bdr);
+  --sl-color-hairline: var(--opuscor-bdr);
+  --sl-color-hairline-shade: var(--opuscor-bdr2);
+
+  /* Text */
+  --sl-color-white: var(--opuscor-tx-strong);
+  --sl-color-gray-1: var(--opuscor-tx);
+  --sl-color-gray-2: var(--opuscor-tx);
+  --sl-color-gray-3: var(--opuscor-muted);
+  --sl-color-gray-4: var(--opuscor-muted);
+  --sl-color-gray-5: var(--opuscor-dim);
+  --sl-color-gray-6: var(--opuscor-surf3);
+  --sl-color-gray-7: var(--opuscor-surf2);
+  --sl-color-black: var(--opuscor-bg);
+
+  /* Accent */
+  --sl-color-accent-low: var(--opuscor-accent-soft);
+  --sl-color-accent: var(--opuscor-accent);
+  --sl-color-accent-high: var(--opuscor-accent-h);
+
+  /* Text colors */
+  --sl-color-text: var(--opuscor-tx);
+  --sl-color-text-accent: var(--opuscor-accent);
+  --sl-color-text-invert: var(--opuscor-bg);
+
+  /* Code blocks */
+  --sl-color-bg-code: var(--opuscor-bg2);
+  --sl-color-text-code: var(--opuscor-tx);
+}
+
+/* ====== LIGHT ====== */
+:root[data-theme='light'] {
+  --sl-color-bg: var(--opuscor-bg);
+  --sl-color-bg-nav: var(--opuscor-surf);
+  --sl-color-bg-sidebar: var(--opuscor-bg);
+  --sl-color-bg-inline-code: var(--opuscor-surf3);
+  --sl-color-bg-accent: var(--opuscor-accent);
+
+  --sl-color-hairline-light: var(--opuscor-bdr);
+  --sl-color-hairline: var(--opuscor-bdr);
+  --sl-color-hairline-shade: var(--opuscor-bdr2);
+
+  --sl-color-white: var(--opuscor-tx-strong);
+  --sl-color-gray-1: var(--opuscor-tx);
+  --sl-color-gray-2: var(--opuscor-tx);
+  --sl-color-gray-3: var(--opuscor-muted);
+  --sl-color-gray-4: var(--opuscor-muted);
+  --sl-color-gray-5: var(--opuscor-dim);
+  --sl-color-gray-6: var(--opuscor-surf3);
+  --sl-color-gray-7: var(--opuscor-surf2);
+  --sl-color-black: var(--opuscor-tx-strong);
+
+  --sl-color-accent-low: var(--opuscor-accent-soft);
+  --sl-color-accent: var(--opuscor-accent);
+  --sl-color-accent-high: var(--opuscor-accent-h);
+
+  --sl-color-text: var(--opuscor-tx);
+  --sl-color-text-accent: var(--opuscor-accent);
+  --sl-color-text-invert: var(--opuscor-bg);
+
+  --sl-color-bg-code: var(--opuscor-bg2);
+  --sl-color-text-code: var(--opuscor-tx);
+}
+
+/* ====== TYPE & SPACING (shared) ====== */
+:root {
+  --sl-font: var(--opuscor-ff-sans);
+  --sl-font-mono: var(--opuscor-ff-mono);
+
+  /* Starlight's body font size — match our 16px base */
+  --sl-text-base: var(--opuscor-fz-base);
+  --sl-text-h1: var(--opuscor-fz-3xl);
+  --sl-text-h2: var(--opuscor-fz-2xl);
+  --sl-text-h3: var(--opuscor-fz-xl);
+  --sl-text-h4: var(--opuscor-fz-lg);
+  --sl-text-h5: var(--opuscor-fz-md);
+
+  /* Spacious content area */
+  --sl-content-width: 50rem;
+  --sl-content-pad-x: 1.5rem;
+  --sl-line-height: var(--opuscor-lh-base);
+  --sl-line-height-headings: var(--opuscor-lh-tight);
+
+  /* Sidebar widths */
+  --sl-sidebar-width: 18rem;
+  --sl-sidebar-pad-x: 1.25rem;
+
+  /* Mobile nav */
+  --sl-nav-height: 4rem;
+  --sl-nav-pad-x: 1.5rem;
+}
