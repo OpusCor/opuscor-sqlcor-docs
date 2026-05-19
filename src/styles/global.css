@@ -263,15 +263,25 @@ kbd {
 .opuscor-logo {
   font-family: var(--opuscor-ff-mono);
   font-weight: 700;
-  font-size: var(--opuscor-fz-md);
-  letter-spacing: -0.02em;
+  font-size: 1.2rem;
   color: var(--opuscor-tx-strong);
-  display: inline-flex;
-  align-items: baseline;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
-.opuscor-logo:hover { text-decoration: none; color: var(--opuscor-tx-strong); }
-.opuscor-logo .opuscor-logo-bracket { color: var(--opuscor-accent); }
+
+.opuscor-logo:hover {
+  text-decoration: none;
+  color: var(--opuscor-tx-strong);
+}
+
+.opuscor-logo-bracket {
+  color: var(--opuscor-accent);
+}
+
+.opuscor-logo-text {
+  color: var(--opuscor-tx-strong);
+}
 
 /* Styling for image placeholders (the stub blocks) */
 .opuscor-image-placeholder {
@@ -345,6 +355,8 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-3);
   color: var(--opuscor-tx);
   padding: var(--opuscor-s-3) var(--opuscor-s-4);
+  /* Added left padding to prevent overlap with search icon */
+  padding-left: 2.5rem;
 }
 
 .pagefind-ui__result:hover,
