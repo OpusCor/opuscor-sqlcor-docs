@@ -1,49 +1,30 @@
 ---
 /**
- * Per-page language switcher.
+ * Per-page language switcher (dropdown).
  *
  * Only renders if the current document has a Ukrainian translation.
- * Switches via the ?lang=uk query parameter — site UI stays English,
- * only document body changes.
- *
- * Phase 4 will add JavaScript to actually swap document content on
- * language toggle. For Phase 2 the buttons navigate to the right URL.
- *
- * Styles live in src/styles/global.css under .opuscor-lang-switcher.
+ * Selecting a language navigates to the English URL or `?lang=uk`.
  */
 interface Props {
-  /** Current product version, e.g. "v1.0" */
   productVersion: string;
-  /** Current document slug, e.g. "installation" */
   slug: string;
-  /** Whether a Ukrainian translation exists for this document/version */
   hasUkTranslation: boolean;
-  /** Currently active language */
   activeLang: 'en' | 'uk';
 }
 
 const { productVersion, slug, hasUkTranslation, activeLang } = Astro.props;
 
-const baseUrl = `/${productVersion}/${slug}/`;
-const enUrl = baseUrl;
-const ukUrl = `${baseUrl}?lang=uk`;
+const enUrl = `/${productVersion}/${slug}/`;
+const ukUrl = `/${productVersion}/${slug}/?lang=uk`;
 ---
 
 {hasUkTranslation && (
-  <div class="opuscor-lang-switcher" role="group" aria-label="Language">
-    <a
-      href={enUrl}
-      class="opuscor-lang-opt"
-      aria-current={activeLang === 'en' ? 'true' : 'false'}
-    >
-      EN
-    </a>
-    <a
-      href={ukUrl}
-      class="opuscor-lang-opt"
-      aria-current={activeLang === 'uk' ? 'true' : 'false'}
-    >
-      UK
-    </a>
-  </div>
+  <select
+    class="opuscor-lang-select"
+    aria-label="Select language"
+    onchange="window.location.href = this.value;"
+  >
+    <option value={enUrl} selected={activeLang === 'en'}>EN</option>
+    <option value={ukUrl} selected={activeLang === 'uk'}>UK</option>
+  </select>
 )}

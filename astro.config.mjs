@@ -60,6 +60,7 @@ export default defineConfig({
         Sidebar: './src/components/Sidebar.astro',
         SidebarSublist: './src/components/SidebarSublist.astro',
         MobileTableOfContents: './src/components/MobileTableOfContents.astro',
+        Search: './src/components/Search.astro',
       },
 
       sidebar: [

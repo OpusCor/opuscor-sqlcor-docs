@@ -79,36 +79,39 @@ const defaultActiveLang = activeLang;
   }}
   headings={headings}
 >
-  <VersionBanner productVersion={productVersion} slug={slug} />
+  <!-- Pagefind indexes only this region (excludes nav, sidebar, TOC). -->
+  <div data-pagefind-body>
+    <VersionBanner productVersion={productVersion} slug={slug} />
 
-  <div class="opuscor-page-title-row">
-    <LanguageSwitcher
-      productVersion={productVersion}
-      slug={slug}
-      hasUkTranslation={hasUkTranslation}
-      activeLang={defaultActiveLang}
-    />
-  </div>
-
-  <div data-opuscor-lang="en" hidden={defaultActiveLang !== 'en'}>
-    <ContentEn />
-    <DocFooter
-      documentVersion={enEntry.data.document_version}
-      productVersion={productVersion}
-      lastUpdated={enEntry.data.last_updated}
-    />
-  </div>
-
-  {ukRendered && ukEntry && (
-    <div data-opuscor-lang="uk" hidden={defaultActiveLang !== 'uk'}>
-      <ukRendered.Content />
-      <DocFooter
-        documentVersion={ukEntry.data.document_version}
+    <div class="opuscor-page-title-row">
+      <LanguageSwitcher
         productVersion={productVersion}
-        lastUpdated={ukEntry.data.last_updated}
+        slug={slug}
+        hasUkTranslation={hasUkTranslation}
+        activeLang={defaultActiveLang}
       />
     </div>
-  )}
+
+    <div data-opuscor-lang="en" hidden={defaultActiveLang !== 'en'}>
+      <ContentEn />
+      <DocFooter
+        documentVersion={enEntry.data.document_version}
+        productVersion={productVersion}
+        lastUpdated={enEntry.data.last_updated}
+      />
+    </div>
+
+    {ukRendered && ukEntry && (
+      <div data-opuscor-lang="uk" data-pagefind-ignore hidden={defaultActiveLang !== 'uk'}>
+        <ukRendered.Content />
+        <DocFooter
+          documentVersion={ukEntry.data.document_version}
+          productVersion={productVersion}
+          lastUpdated={ukEntry.data.last_updated}
+        />
+      </div>
+    )}
+  </div>
 </StarlightPage>
 
 {hasUkTranslation && (
@@ -117,10 +120,6 @@ const defaultActiveLang = activeLang;
       if (new URLSearchParams(location.search).get('lang') !== 'uk') return;
       document.querySelectorAll('[data-opuscor-lang]').forEach(function (el) {
         el.hidden = el.getAttribute('data-opuscor-lang') !== 'uk';
-      });
-      document.querySelectorAll('.opuscor-lang-opt').forEach(function (el) {
-        var isUk = el.textContent.trim() === 'UK';
-        el.setAttribute('aria-current', isUk ? 'true' : 'false');
       });
     })();
   </script>

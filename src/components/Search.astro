@@ -1,0 +1,38 @@
+---
+/**
+ * Search override — wraps Starlight's Pagefind UI and injects
+ * branded keyboard hints in the search dialog footer.
+ */
+import Default from '@astrojs/starlight/components/Search.astro';
+---
+
+<Default />
+
+<script is:inline>
+  document.addEventListener('astro:page-load', () => {
+    const siteSearch = document.querySelector('site-search');
+    if (!siteSearch) return;
+
+    const injectHints = () => {
+      const dialog = siteSearch.querySelector('dialog[aria-label="Search"]');
+      if (!dialog || dialog.querySelector('.opuscor-search-hints')) return;
+
+      const hints = document.createElement('div');
+      hints.className = 'opuscor-search-hints';
+      hints.innerHTML =
+        '<span><kbd>↑</kbd><kbd>↓</kbd> Navigate · <kbd>↵</kbd> Open</span>' +
+        '<span>Pagefind Search</span>';
+      dialog.appendChild(hints);
+    };
+
+    siteSearch.querySelector('button[data-open-modal]')?.addEventListener('click', () => {
+      setTimeout(injectHints, 50);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        setTimeout(injectHints, 50);
+      }
+    });
+  });
+</script>

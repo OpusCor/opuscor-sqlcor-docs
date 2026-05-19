@@ -241,6 +241,22 @@ kbd {
   box-shadow: var(--opuscor-shadow-sm);
 }
 
+.opuscor-lang-select {
+  background: var(--opuscor-surf2);
+  color: var(--opuscor-tx);
+  border: 1px solid var(--opuscor-bdr);
+  border-radius: var(--opuscor-r-3);
+  padding: var(--opuscor-s-1) var(--opuscor-s-3);
+  font-family: var(--opuscor-ff-sans);
+  font-size: var(--opuscor-fz-sm);
+  cursor: pointer;
+  outline: none;
+}
+
+.opuscor-lang-select:hover {
+  border-color: var(--opuscor-accent);
+}
+
 /* ============================================================
  * BRAND LOGO (used in Header override)
  * ============================================================ */
@@ -300,20 +316,66 @@ kbd {
 }
 
 /* ============================================================
- * SIDEBAR UK TRANSLATION BADGE
+ * PAGEFIND SEARCH BRANDING
  * ============================================================ */
-.opuscor-sidebar-uk-badge {
-  position: absolute;
-  right: var(--opuscor-s-3);
-  top: 50%;
-  transform: translateY(-50%);
+:root {
+  --pagefind-ui-primary: var(--opuscor-accent);
+  --pagefind-ui-text: var(--opuscor-tx);
+  --pagefind-ui-background: var(--opuscor-surf);
+  --pagefind-ui-border: var(--opuscor-bdr);
+  --pagefind-ui-tag: var(--opuscor-surf2);
+  --pagefind-ui-border-radius: var(--opuscor-r-4);
+  --pagefind-ui-font: var(--opuscor-ff-sans);
+}
+
+dialog[aria-label='Search'] {
+  background: var(--opuscor-surf);
+  border: 1px solid var(--opuscor-bdr2);
+  border-radius: var(--opuscor-r-5);
+  box-shadow: var(--opuscor-shadow-lg);
+  color: var(--opuscor-tx);
+  padding: 0;
+  max-width: 640px;
+  width: 92vw;
+}
+
+dialog[aria-label='Search'] .pagefind-ui__search-input {
+  background: var(--opuscor-surf2);
+  border: 1px solid var(--opuscor-bdr);
+  border-radius: var(--opuscor-r-3);
+  color: var(--opuscor-tx);
+  padding: var(--opuscor-s-3) var(--opuscor-s-4);
+}
+
+.pagefind-ui__result:hover,
+.pagefind-ui__result.pagefind-ui__result--active {
+  background: var(--opuscor-accent-soft);
+  border-color: color-mix(in oklab, var(--opuscor-accent) 30%, transparent);
+}
+
+.opuscor-search-hints {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--opuscor-s-3) var(--opuscor-s-4);
   font-family: var(--opuscor-ff-mono);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
   color: var(--opuscor-dim);
-  padding: 1px 5px;
+  text-transform: uppercase;
+  border-top: 1px solid var(--opuscor-bdr);
+  background: var(--opuscor-bg2);
+  border-radius: 0 0 var(--opuscor-r-5) var(--opuscor-r-5);
+}
+
+.opuscor-search-hints kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25em;
+  padding: 0 0.25em;
+  margin: 0 0.1em;
+  font-family: inherit;
+  font-size: inherit;
   background: var(--opuscor-surf3);
+  border: 1px solid var(--opuscor-bdr);
   border-radius: var(--opuscor-r-1);
-  letter-spacing: 0.08em;
-  pointer-events: none;
 }
