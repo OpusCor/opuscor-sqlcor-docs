@@ -351,8 +351,6 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-3);
   color: var(--opuscor-tx);
   padding: var(--opuscor-s-3) var(--opuscor-s-4);
-  /* Force padding to prevent icon overlap */
-  padding-left: 3rem !important;
 }
 
 .pagefind-ui__result:hover,
