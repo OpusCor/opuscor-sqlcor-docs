@@ -271,13 +271,12 @@ kbd {
   color: var(--opuscor-tx-strong) !important;
 }
 
-.opuscor-logo-bracket,
-.opuscor-logo-text {
-  color: var(--opuscor-tx-strong) !important;
-}
-
 .opuscor-logo-bracket {
   color: var(--opuscor-accent) !important;
+}
+
+.opuscor-logo-text {
+  color: var(--opuscor-tx-strong) !important;
 }
 
 /* Styling for image placeholders (the stub blocks) */
