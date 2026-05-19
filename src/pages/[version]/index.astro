@@ -76,7 +76,7 @@ const ICONS: Record<string, string> = {
     title="Secure SQL Workbench"
     description="Direct database access for Creatio administrators — with role-based gates and a full audit trail."
   >
-    <a slot="actions" class="opuscor-btn opuscor-btn--primary" href={`/${productVersion}/installation/`}>
+    <a slot="actions" class="opuscor-btn opuscor-btn--primary glow-border" href={`/${productVersion}/installation/`}>
       Get started →
     </a>
   </Hero>
@@ -116,7 +116,8 @@ const ICONS: Record<string, string> = {
     text-decoration: none;
     line-height: 1;
   }
-  .opuscor-btn--primary {
+  .opuscor-btn--primary,
+  .opuscor-btn--primary.glow-border {
     background: var(--opuscor-grad-brand);
     border-color: transparent;
     color: white;

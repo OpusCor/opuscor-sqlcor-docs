@@ -45,6 +45,7 @@
   /* Secondary accent — decorative violet */
   --opuscor-accent-2:      #A78BFA;
   --opuscor-accent-2-h:    #8B5CF6;
+  --opuscor-decorative:    var(--opuscor-accent-2);
   --opuscor-accent-2-soft: rgba(167, 139, 250, 0.10);
   --opuscor-accent-2-glow: rgba(167, 139, 250, 0.30);
 
@@ -125,6 +126,7 @@
 
   --opuscor-accent-2:      #7C3AED;
   --opuscor-accent-2-h:    #6D28D9;
+  --opuscor-decorative:    var(--opuscor-accent-2);
   --opuscor-accent-2-soft: rgba(124, 58, 237, 0.06);
   --opuscor-accent-2-glow: rgba(124, 58, 237, 0.15);
 

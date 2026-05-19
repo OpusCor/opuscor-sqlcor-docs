@@ -11,7 +11,7 @@ const sqlcor = defineCollection({
   }),
   schema: z.object({
     title: z.string(),
-    description: z.string().optional(),
+    description: z.string().min(1),
     sidebar: z
       .object({
         order: z.number().optional(),
