@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SQL Cor">
-  <rect width="32" height="32" rx="7" fill="#0B1220"/>
-  <text
-    x="16"
-    y="21.5"
-    text-anchor="middle"
-    font-family="ui-monospace, 'JetBrains Mono', Menlo, monospace"
-    font-size="13"
-    font-weight="700"
-    letter-spacing="-0.5"
-    fill="#4FC3FF"
-  >[]</text>
-</svg>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><defs><image  width="32" height="32" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IB2cksfwAAAOFQTFRFAAAACxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgCxIgFS5DHD5YFjFGEiY4GjhQNYCsT8P/OYu6DhgoKmOFOIazH0ZhEyg7NHylNH2oGTZNKWGERaviQqLWDBUjO5HAHD9ZDx0uSLHpTLz4GjxUMnmhI1FvL3CXQJ/SLm6TTL35RavhIk9tOIq3DhkpRq7lIUxpTsL+K2WIRaneDhoqSrfwFCk9Q6fcTsD8GztUFCs/S7jyJld3HUFbMnehCxIgCxIgyzGPhAAAAEt0Uk5TABOJvOz/iBRN7VBhF/f2GYPY1Pjw/////////////////////////////////////////////////////////////////////7qGmDDZvwAAASVJREFUeJyF00tLw0AUBeBzaNTWGNKH4oOC4gPBgqBduBQEf7MrEQRxIYggKLiwKtY3itU+FHW8Y2hp4+T2Lm4I54OZyeQSAG0hXsak+CEhkObXvzQqjw0B/mdCbGuwzhG2FJAhs3UlB3zm3lUQsFBTQcgBNZdjWpAl+BwLCj9IPbXBmIB7YEK+VxVF6ZfATAN+pQOCc+lzrNk1+YI8T+V9qRkDpUd7LP9B+vixCyzf2bUnb6VNHbnASrWzw+KhC5R51QbTBy6AhdxFlHs3cAKsVf4es9xPAFi9ljbPPSSBcuYMi9xFIsA6T0o7UAA2uA0VdFU3iC6rp3ouS6v+YPRVzUPm31QQ9P/tQ9NU8rTpP3rAsEkaXuO17HRjyHy7xn+TWwb4BQgEZALI8UsuAAAAAElFTkSuQmCC"/></defs><style></style><use  href="#img1" x="0" y="0"/></svg>

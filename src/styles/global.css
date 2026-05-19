@@ -257,7 +257,7 @@ kbd {
 .opuscor-logo:hover { text-decoration: none; color: var(--opuscor-tx-strong); }
 .opuscor-logo .opuscor-logo-bracket { color: var(--opuscor-accent); }
 
-/* Placeholder styling for images that are not yet migrated */
+/* Styling for image placeholders (the stub blocks) */
 .opuscor-image-placeholder {
   margin: var(--opuscor-s-6) 0;
   padding: var(--opuscor-s-8) var(--opuscor-s-5);
@@ -269,14 +269,7 @@ kbd {
   align-items: center;
   gap: var(--opuscor-s-3);
   text-align: center;
-  /* Add subtle shadow for depth and separation from text */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.opuscor-image-placeholder:hover {
-  transform: translateY(-2px);
-  border-color: var(--opuscor-accent);
+  box-shadow: var(--opuscor-shadow);
 }
 
 .opuscor-image-placeholder-icon {
@@ -290,6 +283,20 @@ kbd {
   color: var(--opuscor-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+/* Styling for real images rendered by Starlight */
+.sl-markdown-content img {
+  border-radius: var(--opuscor-r-4);
+  border: 1px solid var(--opuscor-bdr);
+  box-shadow: var(--opuscor-shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  margin: var(--opuscor-s-6) 0;
+}
+
+.sl-markdown-content img:hover {
+  transform: translateY(-2px);
+  border-color: var(--opuscor-accent);
 }
 
 /* ============================================================
