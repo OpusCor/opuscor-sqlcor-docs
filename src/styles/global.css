@@ -257,25 +257,33 @@ kbd {
 .opuscor-logo:hover { text-decoration: none; color: var(--opuscor-tx-strong); }
 .opuscor-logo .opuscor-logo-bracket { color: var(--opuscor-accent); }
 
-/* ============================================================
- * IMAGE PLACEHOLDERS (remark-image-placeholders)
- * ============================================================ */
+/* Placeholder styling for images that are not yet migrated */
 .opuscor-image-placeholder {
   margin: var(--opuscor-s-6) 0;
   padding: var(--opuscor-s-8) var(--opuscor-s-5);
-  background: var(--opuscor-surf2);
-  border: 1px dashed var(--opuscor-bdr2);
+  background: var(--opuscor-surf);
+  border: 1px dashed var(--opuscor-bdr);
   border-radius: var(--opuscor-r-4);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--opuscor-s-3);
   text-align: center;
+  /* Add subtle shadow for depth and separation from text */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
+
+.opuscor-image-placeholder:hover {
+  transform: translateY(-2px);
+  border-color: var(--opuscor-accent);
+}
+
 .opuscor-image-placeholder-icon {
   font-size: var(--opuscor-fz-2xl);
   opacity: 0.6;
 }
+
 .opuscor-image-placeholder figcaption {
   font-family: var(--opuscor-ff-mono);
   font-size: var(--opuscor-fz-xs);
