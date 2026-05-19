@@ -256,3 +256,49 @@ kbd {
 }
 .opuscor-logo:hover { text-decoration: none; color: var(--opuscor-tx-strong); }
 .opuscor-logo .opuscor-logo-bracket { color: var(--opuscor-accent); }
+
+/* ============================================================
+ * IMAGE PLACEHOLDERS (remark-image-placeholders)
+ * ============================================================ */
+.opuscor-image-placeholder {
+  margin: var(--opuscor-s-6) 0;
+  padding: var(--opuscor-s-8) var(--opuscor-s-5);
+  background: var(--opuscor-surf2);
+  border: 1px dashed var(--opuscor-bdr2);
+  border-radius: var(--opuscor-r-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--opuscor-s-3);
+  text-align: center;
+}
+.opuscor-image-placeholder-icon {
+  font-size: var(--opuscor-fz-2xl);
+  opacity: 0.6;
+}
+.opuscor-image-placeholder figcaption {
+  font-family: var(--opuscor-ff-mono);
+  font-size: var(--opuscor-fz-xs);
+  color: var(--opuscor-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+ * SIDEBAR UK TRANSLATION BADGE
+ * ============================================================ */
+.opuscor-sidebar-uk-badge {
+  position: absolute;
+  right: var(--opuscor-s-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--opuscor-ff-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--opuscor-dim);
+  padding: 1px 5px;
+  background: var(--opuscor-surf3);
+  border-radius: var(--opuscor-r-1);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}

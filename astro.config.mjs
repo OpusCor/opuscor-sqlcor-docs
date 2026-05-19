@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import remarkDirective from 'remark-directive';
 import { remarkOpuscorCallouts } from './src/lib/remark-opuscor-callouts';
+import { remarkImagePlaceholders } from './src/lib/remark-image-placeholders';
 
 /**
  * Astro integration that appends Opuscor's remark plugins AFTER
@@ -19,7 +20,12 @@ function opuscorMarkdown() {
         const existing = config.markdown?.remarkPlugins ?? [];
         updateConfig({
           markdown: {
-            remarkPlugins: [...existing, remarkDirective, remarkOpuscorCallouts],
+            remarkPlugins: [
+              ...existing,
+              remarkDirective,
+              remarkOpuscorCallouts,
+              remarkImagePlaceholders,
+            ],
           },
         });
       },
@@ -51,6 +57,9 @@ export default defineConfig({
       components: {
         Head: './src/components/Head.astro',
         SiteTitle: './src/components/SiteTitle.astro',
+        Sidebar: './src/components/Sidebar.astro',
+        SidebarSublist: './src/components/SidebarSublist.astro',
+        MobileTableOfContents: './src/components/MobileTableOfContents.astro',
       },
 
       sidebar: [

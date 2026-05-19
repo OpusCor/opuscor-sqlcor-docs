@@ -31,6 +31,27 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+/**
+ * Convert "ADMIN_GUIDE" or "admin_guide" or "Admin Guide" into
+ * "Admin Guide". Splits on underscore, lowercases everything,
+ * then capitalizes the first letter of each word.
+ *
+ * Acronyms (e.g. "SQL") are preserved if the original input had
+ * them in all-caps and the word is 3 letters or shorter.
+ *
+ * @param {string} s
+ */
+function toTitleCase(s) {
+  return s
+    .split(/[_\s]+/)
+    .map((word) => {
+      const isShortAllCaps = word.length <= 3 && word === word.toUpperCase();
+      if (isShortAllCaps) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MAP_PATH = path.join(__dirname, 'wikilink-map.json');
 const TARGET_ROOT = path.resolve(__dirname, '..', 'src', 'content', 'sqlcor');
@@ -88,7 +109,7 @@ function convertWikiLinks(body) {
     }
 
     const url = wikiMap[inner];
-    const label = alias ?? inner.replace(/_/g, ' ');
+    const label = alias ?? toTitleCase(inner);
 
     if (!url) {
       // Unknown target (e.g. ★ For Google AI Studio/ARCHITECTURE).
