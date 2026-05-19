@@ -264,14 +264,9 @@ kbd {
   font-family: var(--opuscor-ff-mono);
   font-weight: 700;
   font-size: 1.2rem;
-  color: var(--opuscor-tx-strong);
   text-decoration: none;
   display: flex;
   align-items: center;
-}
-
-.opuscor-logo:hover {
-  text-decoration: none;
   color: var(--opuscor-tx-strong);
 }
 
@@ -355,8 +350,8 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-3);
   color: var(--opuscor-tx);
   padding: var(--opuscor-s-3) var(--opuscor-s-4);
-  /* Added left padding to prevent overlap with search icon */
-  padding-left: 2.5rem;
+  /* Force padding to prevent icon overlap */
+  padding-left: 3rem !important;
 }
 
 .pagefind-ui__result:hover,

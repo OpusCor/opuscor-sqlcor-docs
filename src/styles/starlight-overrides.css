@@ -117,3 +117,14 @@
   --sl-nav-height: 4rem;
   --sl-nav-pad-x: 1.5rem;
 }
+
+[data-theme='light'] {
+  /* Override Starlight default sidebar background for light mode */
+  --sl-color-sidebar-bg: var(--opuscor-bg);
+  --sl-color-bg-sidebar: var(--opuscor-bg);
+}
+
+/* Ensure the active sidebar item color works in light mode */
+[data-theme='light'] .sl-sidebar-item-current {
+  color: var(--opuscor-accent);
+}
