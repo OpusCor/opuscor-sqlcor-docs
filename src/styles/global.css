@@ -386,36 +386,44 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-1);
 }
 
-/* Animated border glow effect */
+/* Animated rotating border glow */
 .glow-border {
   position: relative;
   border-radius: var(--opuscor-r-3);
+  overflow: hidden;
+  /* Use the surface color as the background */
   background: var(--opuscor-surf);
-  z-index: 0;
+  z-index: 1;
 }
 
 .glow-border::before {
   content: '';
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, var(--opuscor-accent), var(--opuscor-decorative));
-  background-size: 400%;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  /* Conic gradient creates the rotating color wheel */
+  background: conic-gradient(
+    transparent,
+    var(--opuscor-accent),
+    transparent,
+    var(--opuscor-accent)
+  );
+  animation: rotate 3s linear infinite;
   z-index: -1;
-  border-radius: var(--opuscor-r-3);
-  animation: glow 20s linear infinite;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
 }
 
-.glow-border:hover::before {
-  opacity: 1;
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: 2px; /* Border thickness */
+  background: var(--opuscor-surf);
+  border-radius: calc(var(--opuscor-r-3) - 1px);
+  z-index: -1;
 }
 
-@keyframes glow {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
