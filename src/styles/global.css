@@ -260,22 +260,24 @@ kbd {
 /* ============================================================
  * BRAND LOGO (used in Header override)
  * ============================================================ */
+/* Force consistent logo styling */
 .opuscor-logo {
-  font-family: var(--opuscor-ff-mono);
-  font-weight: 700;
-  font-size: 1.2rem;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  color: var(--opuscor-tx-strong);
+  font-family: var(--opuscor-ff-mono) !important;
+  font-weight: 700 !important;
+  font-size: 1.2rem !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  color: var(--opuscor-tx-strong) !important;
+}
+
+.opuscor-logo-bracket,
+.opuscor-logo-text {
+  color: var(--opuscor-tx-strong) !important;
 }
 
 .opuscor-logo-bracket {
-  color: var(--opuscor-accent);
-}
-
-.opuscor-logo-text {
-  color: var(--opuscor-tx-strong);
+  color: var(--opuscor-accent) !important;
 }
 
 /* Styling for image placeholders (the stub blocks) */

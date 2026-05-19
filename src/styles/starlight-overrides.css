@@ -60,6 +60,7 @@
 :root[data-theme='light'] {
   --sl-color-bg: var(--opuscor-bg);
   --sl-color-bg-nav: var(--opuscor-surf);
+  --sl-color-sidebar-bg: var(--opuscor-bg);
   --sl-color-bg-sidebar: var(--opuscor-bg);
   --sl-color-bg-inline-code: var(--opuscor-surf3);
   --sl-color-bg-accent: var(--opuscor-accent);
@@ -118,13 +119,12 @@
   --sl-nav-pad-x: 1.5rem;
 }
 
-[data-theme='light'] {
-  /* Override Starlight default sidebar background for light mode */
-  --sl-color-sidebar-bg: var(--opuscor-bg);
-  --sl-color-bg-sidebar: var(--opuscor-bg);
+[data-theme='light'] .sl-sidebar-item-current {
+  color: var(--opuscor-accent) !important;
+  background-color: var(--opuscor-accent-soft) !important;
 }
 
-/* Ensure the active sidebar item color works in light mode */
-[data-theme='light'] .sl-sidebar-item-current {
-  color: var(--opuscor-accent);
+/* Fix for mobile menu background in light mode */
+[data-theme='light'] .sl-mobile-menu {
+  background: var(--opuscor-bg);
 }
