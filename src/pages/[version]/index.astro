@@ -10,6 +10,8 @@ import { Image } from 'astro:assets';
 import { PRODUCT_VERSIONS } from '../../lib/product-versions';
 import heroDark from '../../assets/hero-dark.png';
 import heroLight from '../../assets/hero-light.png';
+import adminDark from '../../assets/admin-dark.png';
+import adminLight from '../../assets/admin-light.png';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import Hero from '../../components/Hero.astro';
@@ -57,11 +59,11 @@ const ICONS = {
       </Hero>
     </div>
     <div class="hero-image">
-      <div class="hero-image-dark">
-        <Image src={heroDark} alt="SQL Cor interface (dark)" width={1600} height={900} loading="eager" />
+      <div class="hero-image-dark hero-image-wrapper">
+        <Image src={heroDark} alt="SQL Cor interface" width={1600} height={900} loading="eager" />
       </div>
-      <div class="hero-image-light">
-        <Image src={heroLight} alt="SQL Cor interface (light)" width={1600} height={900} loading="eager" />
+      <div class="hero-image-light hero-image-wrapper">
+        <Image src={heroLight} alt="SQL Cor interface" width={1600} height={900} loading="eager" />
       </div>
     </div>
   </div>
@@ -114,6 +116,16 @@ const ICONS = {
       iconPath={ICONS.troubleshooting}
     />
   </CardGrid>
+
+  <section class="admin-section">
+    <h2>Powerful Administration</h2>
+    <p>Manage users, access levels, and system settings through a unified, intuitive dashboard.</p>
+
+    <div class="admin-image-wrapper">
+      <Image src={adminDark} alt="Admin Panel" class="dark-only" width={1600} height={900} loading="lazy" />
+      <Image src={adminLight} alt="Admin Panel" class="light-only" width={1600} height={900} loading="lazy" />
+    </div>
+  </section>
 </StarlightPage>
 
 <style>
@@ -122,13 +134,20 @@ const ICONS = {
     grid-template-columns: 1fr 1fr;
     gap: var(--opuscor-s-10);
     align-items: center;
+    margin-bottom: var(--opuscor-s-10);
   }
-  .hero-image :global(img) {
-    width: 100%;
-    height: auto;
+
+  .hero-image-wrapper {
     border-radius: var(--opuscor-r-4);
     border: 1px solid var(--opuscor-bdr);
     box-shadow: var(--opuscor-shadow-lg);
+    overflow: hidden;
+    line-height: 0;
+  }
+  .hero-image-wrapper :global(img) {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   :root[data-theme='light'] .hero-image-dark {
@@ -136,6 +155,36 @@ const ICONS = {
   }
   :root[data-theme='dark'] .hero-image-light {
     display: none;
+  }
+
+  .admin-section {
+    margin-top: var(--opuscor-s-16);
+    text-align: center;
+  }
+  .admin-image-wrapper {
+    margin-top: var(--opuscor-s-8);
+    border-radius: var(--opuscor-r-5);
+    border: 1px solid var(--opuscor-bdr);
+    box-shadow: var(--opuscor-shadow-lg);
+    overflow: hidden;
+    line-height: 0;
+  }
+  .admin-image-wrapper :global(img) {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  .dark-only {
+    display: block;
+  }
+  .light-only {
+    display: none;
+  }
+  :root[data-theme='light'] .dark-only {
+    display: none;
+  }
+  :root[data-theme='light'] .light-only {
+    display: block;
   }
 
   @media (max-width: 768px) {
