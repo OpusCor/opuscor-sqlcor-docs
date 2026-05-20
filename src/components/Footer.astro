@@ -1,10 +1,16 @@
+---
+import linkedinIcon from '../assets/icons/linkedin.svg?raw';
+import emailIcon from '../assets/icons/email.svg?raw';
+import telegramIcon from '../assets/icons/telegram.svg?raw';
+---
+
 <footer class="opuscor-global-footer">
   <div class="footer-content">
-    <p>SQL Cor Docs / Opuscor / Made with <span class="heart">♥︎</span> by Artem</p>
+    <p>SQL Cor Docs / Opuscor / Made with <span class="heart">♥︎</span></p>
     <div class="social-links">
-      <a href="https://www.linkedin.com/in/koliada-artem/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
-      <a href="mailto:artem@opuscor.com" aria-label="Email">Email</a>
-      <a href="https://t.me/OpusCor" target="_blank" rel="noopener noreferrer" aria-label="Telegram">Telegram</a>
+      <a href="https://www.linkedin.com/in/koliada-artem/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" set:html={linkedinIcon} />
+      <a href="mailto:artem@opuscor.com" aria-label="Email" set:html={emailIcon} />
+      <a href="https://t.me/OpusCor" target="_blank" rel="noopener noreferrer" aria-label="Telegram" set:html={telegramIcon} />
     </div>
   </div>
 </footer>
@@ -25,18 +31,24 @@
   .social-links {
     margin-top: var(--opuscor-s-4);
     display: flex;
-    gap: var(--opuscor-s-6);
+    gap: var(--opuscor-s-5);
     justify-content: center;
   }
   .social-links a {
-    color: var(--opuscor-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-    font-size: var(--opuscor-fz-sm);
+  }
+  .social-links :global(svg) {
+    width: 20px;
+    height: 20px;
+    fill: var(--opuscor-muted);
     transition: 0.3s;
   }
-  .social-links a:hover {
-    color: var(--opuscor-accent);
-    text-shadow: 0 0 8px var(--opuscor-accent);
+  .social-links a:hover :global(svg) {
+    fill: var(--opuscor-accent);
+    filter: drop-shadow(0 0 8px var(--opuscor-accent));
   }
   @keyframes beat {
     0%, 100% { transform: scale(1); }
