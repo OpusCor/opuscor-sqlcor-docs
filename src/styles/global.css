@@ -386,41 +386,38 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-1);
 }
 
-/* Animated rotating border glow */
+/* Animated rotating rainbow border with glow */
 .glow-border {
   position: relative;
+  background: var(--opuscor-surf);
   border-radius: var(--opuscor-r-3);
-  overflow: hidden;
-  /* Use the surface color as the background */
-  background: var(--opuscor-surf);
+  padding: 1px; /* Border thickness */
   z-index: 1;
+  overflow: visible; /* Needed for the glow to show outside */
 }
 
+/* The rotating gradient layer */
 .glow-border::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  /* Conic gradient creates the rotating color wheel */
-  background: conic-gradient(
-    transparent,
-    var(--opuscor-accent),
-    transparent,
-    var(--opuscor-accent)
-  );
+  inset: -2px; /* Slightly larger than button */
+  background: conic-gradient(from 0deg, #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
   animation: rotate 3s linear infinite;
-  z-index: -1;
+  border-radius: calc(var(--opuscor-r-3) + 1px);
+  z-index: -2;
 }
 
+/* The glow layer (blurred copy of gradient) */
 .glow-border::after {
-  content: '';
+  content: "";
   position: absolute;
-  inset: 2px; /* Border thickness */
-  background: var(--opuscor-surf);
-  border-radius: calc(var(--opuscor-r-3) - 1px);
-  z-index: -1;
+  inset: -2px;
+  background: conic-gradient(from 0deg, #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
+  animation: rotate 3s linear infinite;
+  border-radius: calc(var(--opuscor-r-3) + 1px);
+  z-index: -3;
+  filter: blur(10px); /* Creates the glow effect */
+  opacity: 0.6;
 }
 
 @keyframes rotate {

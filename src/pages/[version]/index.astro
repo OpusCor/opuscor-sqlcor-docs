@@ -118,13 +118,11 @@ const ICONS: Record<string, string> = {
   }
   .opuscor-btn--primary,
   .opuscor-btn--primary.glow-border {
-    background: transparent;
+    background: var(--opuscor-grad-brand);
+    background-clip: padding-box;
     border-color: transparent;
     color: white;
     font-weight: 600;
-  }
-  .opuscor-btn--primary.glow-border::after {
-    background: var(--opuscor-grad-brand);
   }
   .opuscor-btn--primary:hover {
     filter: brightness(1.08);
