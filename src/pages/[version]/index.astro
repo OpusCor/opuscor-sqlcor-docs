@@ -60,10 +60,10 @@ const ICONS = {
     </div>
     <div class="hero-image">
       <div class="hero-image-dark hero-image-wrapper">
-        <Image src={heroDark} alt="SQL Cor interface" width={1600} height={900} loading="eager" />
+        <Image src={heroDark} alt="SQL Cor interface (dark)" loading="eager" />
       </div>
       <div class="hero-image-light hero-image-wrapper">
-        <Image src={heroLight} alt="SQL Cor interface" width={1600} height={900} loading="eager" />
+        <Image src={heroLight} alt="SQL Cor interface (light)" loading="eager" />
       </div>
     </div>
   </div>
@@ -122,8 +122,8 @@ const ICONS = {
     <p>Manage users, access levels, and system settings through a unified, intuitive dashboard.</p>
 
     <div class="admin-image-wrapper">
-      <Image src={adminDark} alt="Admin Panel" class="dark-only" width={1600} height={900} loading="lazy" />
-      <Image src={adminLight} alt="Admin Panel" class="light-only" width={1600} height={900} loading="lazy" />
+      <Image src={adminDark} alt="Admin Panel (dark)" class="dark-only" />
+      <Image src={adminLight} alt="Admin Panel (light)" class="light-only" />
     </div>
   </section>
 </StarlightPage>
@@ -138,16 +138,15 @@ const ICONS = {
   }
 
   .hero-image-wrapper {
-    border-radius: var(--opuscor-r-4);
-    border: 1px solid var(--opuscor-bdr);
-    box-shadow: var(--opuscor-shadow-lg);
-    overflow: hidden;
-    line-height: 0;
+    transition: transform 0.3s ease;
+  }
+  .hero-image-wrapper:hover {
+    transform: scale(1.02);
   }
   .hero-image-wrapper :global(img) {
     width: 100%;
     height: auto;
-    object-fit: contain;
+    display: block;
   }
 
   :root[data-theme='light'] .hero-image-dark {
@@ -163,16 +162,11 @@ const ICONS = {
   }
   .admin-image-wrapper {
     margin-top: var(--opuscor-s-8);
-    border-radius: var(--opuscor-r-5);
-    border: 1px solid var(--opuscor-bdr);
-    box-shadow: var(--opuscor-shadow-lg);
-    overflow: hidden;
-    line-height: 0;
   }
   .admin-image-wrapper :global(img) {
     width: 100%;
     height: auto;
-    object-fit: contain;
+    display: block;
   }
   .dark-only {
     display: block;
