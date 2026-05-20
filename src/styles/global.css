@@ -307,6 +307,21 @@ kbd {
   letter-spacing: 0.08em;
 }
 
+/* Increase vertical rhythm in documentation */
+.sl-markdown-content h2 {
+  margin-top: var(--opuscor-s-10) !important;
+  margin-bottom: var(--opuscor-s-5) !important;
+}
+.sl-markdown-content h3 {
+  margin-top: var(--opuscor-s-8) !important;
+}
+.sl-markdown-content p {
+  margin-bottom: var(--opuscor-s-5) !important;
+}
+.sl-markdown-content pre {
+  margin: var(--opuscor-s-6) 0 !important;
+}
+
 /* Styling for real images rendered by Starlight */
 .sl-markdown-content img {
   border-radius: var(--opuscor-r-4);
