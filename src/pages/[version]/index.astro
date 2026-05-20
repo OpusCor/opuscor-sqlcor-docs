@@ -168,17 +168,18 @@ const ICONS = {
     height: auto;
     display: block;
   }
+  /* Theme-aware image toggling (forced specificity) */
   .dark-only {
-    display: block;
+    display: block !important;
   }
   .light-only {
-    display: none;
+    display: none !important;
   }
   :root[data-theme='light'] .dark-only {
-    display: none;
+    display: none !important;
   }
   :root[data-theme='light'] .light-only {
-    display: block;
+    display: block !important;
   }
 
   @media (max-width: 768px) {
