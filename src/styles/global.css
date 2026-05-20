@@ -386,41 +386,28 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   border-radius: var(--opuscor-r-1);
 }
 
-/* Animated rotating rainbow border with glow */
+/* Clean animated gradient border for the "Get Started" button */
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
 .glow-border {
   position: relative;
-  background: var(--opuscor-surf);
-  border-radius: var(--opuscor-r-3);
-  padding: 1px; /* Border thickness */
-  z-index: 1;
-  overflow: visible; /* Needed for the glow to show outside */
+  /* This ensures the gradient border stays inside the rounded corners */
+  border: 2px solid transparent;
+  --glow-angle: 0deg;
+  background-image: var(--opuscor-grad-brand),
+                    conic-gradient(from var(--glow-angle), #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: rotate-border 3s linear infinite;
 }
 
-/* The rotating gradient layer */
-.glow-border::before {
-  content: "";
-  position: absolute;
-  inset: -2px; /* Slightly larger than button */
-  background: conic-gradient(from 0deg, #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
-  animation: rotate 3s linear infinite;
-  border-radius: calc(var(--opuscor-r-3) + 1px);
-  z-index: -2;
+@keyframes rotate-border {
+  to { --glow-angle: 360deg; }
 }
 
-/* The glow layer (blurred copy of gradient) */
-.glow-border::after {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background: conic-gradient(from 0deg, #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
-  animation: rotate 3s linear infinite;
-  border-radius: calc(var(--opuscor-r-3) + 1px);
-  z-index: -3;
-  filter: blur(10px); /* Creates the glow effect */
-  opacity: 0.6;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+/* If the button looks broken after this, simply remove the .glow-border class
+   from src/pages/[version]/index.astro to revert to original state. */
