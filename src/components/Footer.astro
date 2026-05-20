@@ -1,0 +1,28 @@
+<footer class="opuscor-global-footer">
+  <div class="footer-content">
+    <span>Opuscor / SQL Cor Docs</span>
+    <span class="heart">♥︎</span>
+    <span>Made by Artem</span>
+  </div>
+</footer>
+
+<style>
+  .opuscor-global-footer {
+    padding: var(--opuscor-s-8);
+    text-align: center;
+    border-top: 1px solid var(--opuscor-bdr);
+    font-size: var(--opuscor-fz-sm);
+    color: var(--opuscor-muted);
+    margin-top: var(--opuscor-s-10);
+  }
+  .heart {
+    display: inline-block;
+    color: var(--opuscor-accent);
+    margin: 0 0.5rem;
+    animation: beat 3s ease-in-out infinite;
+  }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.5); opacity: 1; }
+  }
+</style>

@@ -2,10 +2,10 @@
 // @ts-check
 
 /**
- * Content migration script for Phase 3.
+ * Content migration script for Phase 3 / Phase 7.5.
  *
  * Reads source Markdown files (Obsidian-flavored) and writes them
- * into src/content/sqlcor/<slug>/v1.0.md with our schema.
+ * into src/content/sqlcor/<slug>/v1.0.md (or v1.0.uk.md) with our schema.
  *
  * Transformations:
  *   - Frontmatter rewritten to our schema (drops `tags`, `aliases`,
@@ -15,16 +15,18 @@
  *   - [[WikiLink#anchor]] -> [WikiLink](/url/#anchor)
  *   - [[WikiLink|Alias]] -> [Alias](/url/)
  *   - [[Non-mapped/path]] -> stripped to plain text in italics
- *     (avoids broken links to unrelated Obsidian notes)
- *
- * Source files are NOT modified. The script is idempotent — running
- * it twice produces the same output.
  *
  * Usage:
- *   node scripts/migrate-content.mjs <source-file> <target-slug> <order>
+ *   node scripts/migrate-content.mjs <source-file> <target-slug> <order> [options]
+ *
+ * Options:
+ *   --uk              Write v1.0.uk.md and add lang: uk
+ *   --title "..."     Override title (for broken Obsidian frontmatter)
+ *   --description "..."  Override description (required by schema)
  *
  * Example:
- *   node scripts/migrate-content.mjs ./inbox/User_Guide.md user-guide 2
+ *   node scripts/migrate-content.mjs ./src/content/sqlcor/User_Guide.md user-guide 2
+ *   node scripts/migrate-content.mjs ./src/content/sqlcor/Довідник функцій.md reference/features 4 --uk
  */
 
 import fs from 'node:fs';
@@ -32,13 +34,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
- * Convert "ADMIN_GUIDE" or "admin_guide" or "Admin Guide" into
- * "Admin Guide". Splits on underscore, lowercases everything,
- * then capitalizes the first letter of each word.
- *
- * Acronyms (e.g. "SQL") are preserved if the original input had
- * them in all-caps and the word is 3 letters or shorter.
- *
  * @param {string} s
  */
 function toTitleCase(s) {
@@ -59,9 +54,29 @@ const TARGET_ROOT = path.resolve(__dirname, '..', 'src', 'content', 'sqlcor');
 /** @type {Record<string, string>} */
 const wikiMap = JSON.parse(fs.readFileSync(MAP_PATH, 'utf-8'));
 
-const [, , sourcePath, targetSlug, orderStr] = process.argv;
+const args = process.argv.slice(2);
+const positional = [];
+/** @type {{ uk?: boolean, title?: string, description?: string }} */
+const flags = {};
+
+for (let i = 0; i < args.length; i++) {
+  const arg = args[i];
+  if (arg === '--uk') {
+    flags.uk = true;
+  } else if (arg === '--title' && args[i + 1]) {
+    flags.title = args[++i];
+  } else if (arg === '--description' && args[i + 1]) {
+    flags.description = args[++i];
+  } else {
+    positional.push(arg);
+  }
+}
+
+const [sourcePath, targetSlug, orderStr] = positional;
 if (!sourcePath || !targetSlug) {
-  console.error('Usage: migrate-content.mjs <source> <slug> <order>');
+  console.error(
+    'Usage: migrate-content.mjs <source> <slug> <order> [--uk] [--title "..."] [--description "..."]',
+  );
   process.exit(1);
 }
 
@@ -69,7 +84,6 @@ const order = orderStr ? parseInt(orderStr, 10) : 99;
 const raw = fs.readFileSync(sourcePath, 'utf-8');
 
 /**
- * Split a markdown file into frontmatter and body.
  * @param {string} input
  * @returns {{ fm: Record<string, string>, body: string }}
  */
@@ -87,12 +101,43 @@ function splitFrontmatter(input) {
 }
 
 /**
- * Convert all [[WikiLink]] forms to Markdown links.
+ * Parse broken Obsidian exports where metadata appears as `## title: ...` after `---`.
+ * @param {string} body
+ * @param {Record<string, string>} fm
+ */
+function parseBrokenObsidianMeta(body, fm) {
+  const lines = body.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (!line.startsWith('## ')) break;
+
+    const meta = line.slice(3).trim();
+    const titleMatch = meta.match(/^title:\s*(.+)$/i);
+    if (titleMatch) {
+      fm.title = titleMatch[1].trim();
+      i++;
+      continue;
+    }
+
+    const kvMatch = meta.match(/^([a-z_]+):\s*(.+)$/i);
+    if (kvMatch && ['tags', 'aliases', 'related', 'description'].includes(kvMatch[1])) {
+      if (kvMatch[1] === 'description') fm.description = kvMatch[2].trim();
+      i++;
+      continue;
+    }
+
+    break;
+  }
+
+  return { fm, body: lines.slice(i).join('\n') };
+}
+
+/**
  * @param {string} body
  */
 function convertWikiLinks(body) {
-  return body.replace(/\[\[([^\]]+)\]\]/g, (full, inner) => {
-    // Handle [[Target|Alias]]
+  return body.replace(/\[\[([^\]]+)\]\]/g, (_full, inner) => {
     let alias = null;
     const aliasMatch = inner.match(/^(.+?)\\?\|(.+)$/);
     if (aliasMatch) {
@@ -100,7 +145,6 @@ function convertWikiLinks(body) {
       alias = aliasMatch[2];
     }
 
-    // Handle [[Target#anchor]]
     let anchor = '';
     const anchorMatch = inner.match(/^(.+?)#(.+)$/);
     if (anchorMatch) {
@@ -112,8 +156,6 @@ function convertWikiLinks(body) {
     const label = alias ?? toTitleCase(inner);
 
     if (!url) {
-      // Unknown target (e.g. ★ For Google AI Studio/ARCHITECTURE).
-      // Render as italic text — link target does not exist on the site.
       return `*${label}*`;
     }
 
@@ -122,23 +164,30 @@ function convertWikiLinks(body) {
 }
 
 /**
- * Build the new frontmatter block.
  * @param {Record<string, string>} fm
- * @returns {string}
  */
+/**
+ * @param {string} value
+ */
+function yamlQuote(value) {
+  return `"${String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+}
+
 function buildFrontmatter(fm) {
-  const title = fm.title ?? targetSlug;
-  const description = fm.description ?? '';
-  const today = new Date().toISOString().slice(0, 10);
+  const title = flags.title ?? fm.title ?? targetSlug;
+  const description =
+    flags.description ?? fm.description ?? 'SQL Cor documentation.';
+  const lastUpdated = '2026-05-20';
 
   const lines = [
     '---',
-    `title: ${title}`,
-    description ? `description: ${description}` : null,
+    `title: ${yamlQuote(title)}`,
+    `description: ${yamlQuote(description)}`,
     'sidebar:',
     `  order: ${order}`,
     'document_version: "1.0"',
-    `last_updated: "${today}"`,
+    flags.uk ? 'lang: uk' : null,
+    `last_updated: "${lastUpdated}"`,
     '---',
     '',
   ].filter((x) => x !== null);
@@ -146,21 +195,18 @@ function buildFrontmatter(fm) {
   return lines.join('\n');
 }
 
-const { fm, body } = splitFrontmatter(raw);
+let { fm, body } = splitFrontmatter(raw);
+({ fm, body } = parseBrokenObsidianMeta(body, fm));
 
-// Strip the leading H1 from the body — Starlight renders the title
-// from frontmatter, so a duplicate H1 looks wrong.
 const bodyNoH1 = body.replace(/^\s*# [^\n]+\n+/, '');
-
 const converted = convertWikiLinks(bodyNoH1);
 const out = buildFrontmatter(fm) + converted.trimStart();
 
-// Target path: src/content/sqlcor/<targetSlug>/v1.0.md (supports nested slugs like reference/features)
 const targetDir = path.join(TARGET_ROOT, ...targetSlug.split('/'));
 fs.mkdirSync(targetDir, { recursive: true });
 fs.mkdirSync(path.join(targetDir, '_assets', 'v1.0'), { recursive: true });
 
-const targetFile = path.join(targetDir, 'v1.0.md');
+const targetFile = path.join(targetDir, flags.uk ? 'v1.0.uk.md' : 'v1.0.md');
 fs.writeFileSync(targetFile, out, 'utf-8');
 
 console.log(`Migrated: ${sourcePath} → ${path.relative(process.cwd(), targetFile)}`);

@@ -61,6 +61,7 @@ export default defineConfig({
         SidebarSublist: './src/components/SidebarSublist.astro',
         MobileTableOfContents: './src/components/MobileTableOfContents.astro',
         Search: './src/components/Search.astro',
+        Footer: './src/components/Footer.astro',
       },
 
       sidebar: [
@@ -89,6 +90,13 @@ export default defineConfig({
           label: 'Help',
           items: [
             { label: 'Troubleshooting', link: '/v1.0/troubleshooting/' },
+          ],
+        },
+        {
+          label: 'Internals',
+          items: [
+            { label: 'Architecture', link: '/v1.0/internals/architecture/' },
+            { label: 'Marketplace Chat Context', link: '/v1.0/internals/marketplace-chat/' },
           ],
         },
       ],
