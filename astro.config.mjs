@@ -94,7 +94,13 @@ export default defineConfig({
         },
       ],
 
-      social: [],
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/OpusCor/SQL',
+        },
+      ],
     }),
     opuscorMarkdown(),
   ],

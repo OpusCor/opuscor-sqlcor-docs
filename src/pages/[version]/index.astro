@@ -6,7 +6,9 @@
  * search) but with a custom landing hero and card grid of available
  * documents — instead of the standard document layout.
  */
+import { Image } from 'astro:assets';
 import { PRODUCT_VERSIONS } from '../../lib/product-versions';
+import heroImage from '../../assets/hero.png';
 
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import Hero from '../../components/Hero.astro';
@@ -41,15 +43,22 @@ const ICONS = {
     pagefind: false,
   }}
 >
-  <Hero
-    tagline={`SQL Cor · ${productLabel}`}
-    title="Secure SQL Workbench"
-    description="Direct database access for Creatio administrators — with role-based gates and a full audit trail."
-  >
-    <a slot="actions" class="opuscor-btn opuscor-btn--primary glow-border" href={`/${productVersion}/installation/`}>
-      Get started →
-    </a>
-  </Hero>
+  <div class="hero-container">
+    <div class="hero-text">
+      <Hero
+        tagline={`SQL Cor · ${productLabel}`}
+        title="Secure SQL Workbench"
+        description="Direct database access for Creatio administrators — with role-based gates and a full audit trail."
+      >
+        <a slot="actions" class="opuscor-btn opuscor-btn--primary glow-border" href={`/${productVersion}/installation/`}>
+          Get started →
+        </a>
+      </Hero>
+    </div>
+    <div class="hero-image">
+      <Image src={heroImage} alt="SQL Cor interface" width={1600} height={900} loading="eager" />
+    </div>
+  </div>
 
   <h2 style="margin-top: var(--opuscor-s-12); margin-bottom: var(--opuscor-s-6);">
     Browse the documentation
@@ -100,6 +109,27 @@ const ICONS = {
     />
   </CardGrid>
 </StarlightPage>
+
+<style>
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--opuscor-s-10);
+    align-items: center;
+  }
+  .hero-image :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--opuscor-r-4);
+    border: 1px solid var(--opuscor-bdr);
+    box-shadow: var(--opuscor-shadow-lg);
+  }
+  @media (max-width: 768px) {
+    .hero-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 
 <style is:global>
   .opuscor-btn {
