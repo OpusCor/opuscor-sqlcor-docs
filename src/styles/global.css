@@ -426,3 +426,33 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 
 /* If the button looks broken after this, simply remove the .glow-border class
    from src/pages/[version]/index.astro to revert to original state. */
+
+/* ============================================================
+ * THEME-AWARE MARKDOWN IMAGES
+ * Automatically toggles images ending in -dark.* or -light.*
+ * ============================================================ */
+
+/* Hide light images in dark mode (default Starlight theme) */
+:root[data-theme='dark'] .sl-markdown-content img[src*="-light."] {
+  display: none !important;
+}
+
+/* Hide dark images in light mode */
+:root[data-theme='light'] .sl-markdown-content img[src*="-dark."] {
+  display: none !important;
+}
+
+/*
+ * If an author places the hidden image on its own line, Markdown wraps it in a <p>.
+ * We must hide that <p> entirely so it doesn't leave an empty gap/margin.
+ * Supported in all modern browsers.
+ */
+:root[data-theme='dark'] .sl-markdown-content p:has(> img[src*="-light."]:only-child) {
+  display: none !important;
+  margin: 0 !important;
+}
+
+:root[data-theme='light'] .sl-markdown-content p:has(> img[src*="-dark."]:only-child) {
+  display: none !important;
+  margin: 0 !important;
+}
