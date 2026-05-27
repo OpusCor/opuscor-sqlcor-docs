@@ -408,61 +408,91 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   inherits: false;
 }
 
-@property --shimmer-x {
-  syntax: '<percentage>';
-  initial-value: -120%;
-  inherits: false;
+:root {
+  --opuscor-ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+  --opuscor-btn-glass: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--sl-color-accent-high) 82%, transparent) 0%,
+    color-mix(in oklab, var(--sl-color-accent) 68%, transparent) 52%,
+    color-mix(in oklab, var(--sl-color-accent-low) 88%, transparent) 100%
+  );
+  --opuscor-btn-glass-border: color-mix(in oklab, var(--sl-color-accent) 38%, transparent);
+  --opuscor-btn-glass-highlight: color-mix(in oklab, var(--sl-color-white) 14%, transparent);
 }
 
 .glow-border {
   position: relative;
   overflow: hidden;
-  border: 2px solid transparent;
+  isolation: isolate;
+  border: 1px solid var(--opuscor-btn-glass-border);
   --glow-angle: 0deg;
-  background-image: var(--opuscor-grad-brand),
-                    conic-gradient(from var(--glow-angle), #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  animation: rotate-border 3s linear infinite;
+  background: var(--opuscor-btn-glass);
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  box-shadow:
+    inset 0 1px 0 var(--opuscor-btn-glass-highlight),
+    0 1px 2px color-mix(in oklab, var(--sl-color-black) 18%, transparent);
   transition:
-    transform 320ms cubic-bezier(0.23, 1, 0.32, 1),
-    box-shadow 320ms cubic-bezier(0.23, 1, 0.32, 1);
+    transform 1.2s var(--opuscor-ease-premium),
+    box-shadow 1.2s var(--opuscor-ease-premium),
+    border-color 1.2s var(--opuscor-ease-premium),
+    filter 1.2s var(--opuscor-ease-premium);
 }
 
 .glow-border::before {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 0;
   background: linear-gradient(
     105deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.45) 50%,
-    transparent 65%
+    transparent 30%,
+    color-mix(in oklab, var(--sl-color-white) 42%, transparent) 50%,
+    transparent 70%
   );
-  transform: translateX(var(--shimmer-x, -120%));
+  transform: translateX(-130%);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 1.2s var(--opuscor-ease-premium);
+}
+
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--glow-angle),
+    var(--sl-color-accent),
+    color-mix(in oklab, var(--sl-color-accent-high) 70%, var(--sl-color-accent)),
+    var(--sl-color-accent-low),
+    var(--sl-color-accent)
+  );
+  opacity: 0.35;
+  animation: rotate-border 8s linear infinite;
 }
 
 .opuscor-btn--primary.glow-border {
-  background-image: linear-gradient(135deg, var(--sl-color-accent-high) 0%, var(--sl-color-accent) 45%, var(--opuscor-accent-2) 100%),
-                    conic-gradient(from var(--glow-angle), #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
+  color: var(--sl-color-text-invert);
+  font-weight: 600;
 }
 
 .opuscor-hero-actions .opuscor-btn--primary:hover,
 .opuscor-btn--primary.glow-border:hover {
   transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--sl-color-accent) 55%, transparent);
   box-shadow:
-    0 10px 28px color-mix(in oklab, var(--sl-color-accent) 35%, transparent),
-    0 0 0 1px color-mix(in oklab, var(--sl-color-accent) 25%, transparent);
-  filter: brightness(1.06);
+    inset 0 1px 0 color-mix(in oklab, var(--sl-color-white) 18%, transparent),
+    0 8px 28px color-mix(in oklab, var(--sl-color-accent) 28%, transparent),
+    0 20px 48px color-mix(in oklab, var(--sl-color-accent) 16%, transparent);
+  filter: brightness(1.04);
 }
 
 .opuscor-hero-actions .opuscor-btn--primary:hover::before,
 .opuscor-btn--primary.glow-border:hover::before {
   opacity: 1;
-  animation: btn-shimmer 900ms cubic-bezier(0.23, 1, 0.32, 1);
+  animation: btn-shimmer 1.4s var(--opuscor-ease-premium);
 }
 
 @keyframes rotate-border {
@@ -470,45 +500,49 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 }
 
 @keyframes btn-shimmer {
-  from { transform: translateX(-120%); }
-  to { transform: translateX(120%); }
+  from { transform: translateX(-130%); }
+  to { transform: translateX(130%); }
 }
 
 /* ============================================================
- * DOCUMENTATION CARDS — decorative accent wash
+ * DOCUMENTATION CARDS — blurred accent icon wash
  * ============================================================ */
-.opuscor-card,
-.card {
+.card,
+.opuscor-card {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
-.opuscor-card::after,
-.card::after {
+.card::after,
+.opuscor-card::after {
   content: '';
   position: absolute;
-  right: -12%;
-  bottom: -18%;
-  width: min(220px, 70%);
-  height: min(220px, 70%);
+  right: -10%;
+  bottom: -22%;
+  width: clamp(160px, 58%, 300px);
+  height: clamp(160px, 58%, 300px);
   background: radial-gradient(
     circle at center,
-    color-mix(in oklab, var(--sl-color-accent) 18%, transparent) 0%,
+    var(--sl-color-accent) 0%,
+    color-mix(in oklab, var(--sl-color-accent) 55%, transparent) 38%,
     transparent 72%
   );
-  opacity: 0.08;
+  opacity: 0.04;
+  filter: blur(40px);
   pointer-events: none;
   z-index: 0;
-  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 1.2s var(--opuscor-ease-premium);
 }
 
-.opuscor-card:hover::after,
-.card:hover::after {
-  opacity: 0.1;
+.card:hover::after,
+.opuscor-card:hover::after {
+  opacity: 0.05;
 }
 
-.opuscor-card > *,
-.card > * {
+.card > *,
+.opuscor-card > * {
   position: relative;
   z-index: 1;
 }
@@ -518,9 +552,9 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
  * ============================================================ */
 .dn-heart {
   display: inline-block;
-  color: var(--opuscor-accent);
+  color: var(--sl-color-accent);
   margin: 0 0.5rem;
-  animation: heart-beat 1.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  animation: heart-beat 3.5s var(--opuscor-ease-premium) infinite;
   filter: drop-shadow(0 0 0 transparent);
 }
 
@@ -529,19 +563,19 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
     transform: scale(1);
     filter: drop-shadow(0 0 0 transparent);
   }
-  14% {
-    transform: scale(1.45);
-    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.55));
+  12% {
+    transform: scale(1.28);
+    filter: drop-shadow(0 0 12px color-mix(in oklab, var(--opuscor-err) 55%, transparent));
   }
-  28% {
+  24% {
     transform: scale(1);
-    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.25));
+    filter: drop-shadow(0 0 4px color-mix(in oklab, var(--opuscor-err) 22%, transparent));
   }
-  42% {
-    transform: scale(1.35);
-    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.45));
+  36% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 8px color-mix(in oklab, var(--opuscor-err) 38%, transparent));
   }
-  70% {
+  60% {
     transform: scale(1);
     filter: drop-shadow(0 0 0 transparent);
   }

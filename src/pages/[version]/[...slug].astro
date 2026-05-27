@@ -13,6 +13,7 @@ import { resolveDocumentVersion } from '../../lib/version-resolver';
 import { buildEntryId, getSqlcorEntry } from '../../lib/get-doc-content';
 import { render } from 'astro:content';
 
+import { buildTocTree, tocTreeToHtml } from '../../lib/build-toc-tree';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import DocFooter from '../../components/DocFooter.astro';
 import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
@@ -59,11 +60,28 @@ const ukEntryId = hasUkTranslation
   : null;
 const ukEntry = ukEntryId ? await getSqlcorEntry(ukEntryId) : null;
 
-const { Content: ContentEn, headings } = await render(enEntry);
-const ukRendered = ukEntry ? await render(ukEntry) : null;
+const TOC_MIN = 2;
+const TOC_MAX = 3;
+const UK_TOC_OVERVIEW = 'Огляд';
+const UK_TOC_TITLE = 'На цій сторінці';
 
-const pageTitle = enEntry.data.title;
-const pageDescription = enEntry.data.description ?? '';
+const { Content: ContentEn, headings: enHeadings } = await render(enEntry);
+const ukRendered = ukEntry ? await render(ukEntry) : null;
+const ukHeadings = ukRendered?.headings ?? [];
+
+const pageHeadings = activeLang === 'uk' && ukHeadings.length ? ukHeadings : enHeadings;
+const ukTocHtml = hasUkTranslation && ukHeadings.length
+  ? tocTreeToHtml(buildTocTree(ukHeadings, TOC_MIN, TOC_MAX, UK_TOC_OVERVIEW))
+  : '';
+const ukTocMobileHtml = hasUkTranslation && ukHeadings.length
+  ? tocTreeToHtml(buildTocTree(ukHeadings, TOC_MIN, TOC_MAX, UK_TOC_OVERVIEW), true)
+  : '';
+
+const pageTitle = activeLang === 'uk' && ukEntry ? ukEntry.data.title : enEntry.data.title;
+const pageDescription =
+  activeLang === 'uk' && ukEntry?.data.description
+    ? ukEntry.data.description
+    : enEntry.data.description ?? '';
 const defaultActiveLang = activeLang;
 ---
 
@@ -72,12 +90,13 @@ const defaultActiveLang = activeLang;
     title: pageTitle,
     description: pageDescription,
     tableOfContents: {
-      minHeadingLevel: 2,
-      maxHeadingLevel: 3,
+      minHeadingLevel: TOC_MIN,
+      maxHeadingLevel: TOC_MAX,
     },
     pagefind: true,
   }}
-  headings={headings}
+  headings={pageHeadings}
+  lang={activeLang === 'uk' ? 'uk' : 'en'}
 >
   <!-- Pagefind indexes only this region (excludes nav, sidebar, TOC). -->
   <div data-pagefind-body>
@@ -115,7 +134,7 @@ const defaultActiveLang = activeLang;
 </StarlightPage>
 
 {hasUkTranslation && (
-  <script is:inline>
+  <script is:inline define:vars={{ ukTocHtml, ukTocMobileHtml, ukTocTitle: UK_TOC_TITLE }}>
     (function () {
       if (new URLSearchParams(location.search).get('lang') !== 'uk') return;
 
@@ -125,19 +144,25 @@ const defaultActiveLang = activeLang;
 
       document.documentElement.lang = 'uk';
 
+      var main = document.querySelector('main[data-pagefind-body]');
+      if (main) main.lang = 'uk';
+
       var tocHeading = document.getElementById('starlight__on-this-page');
-      if (tocHeading) tocHeading.textContent = 'На цій сторінці';
+      if (tocHeading) tocHeading.textContent = ukTocTitle;
 
-      document.querySelectorAll('.pagination-links a[rel="prev"] span').forEach(function (el) {
-        if (el.firstChild && el.firstChild.nodeType === 3) {
-          el.firstChild.textContent = 'Назад';
-        }
-      });
+      var desktopToc = document.querySelector('starlight-toc nav');
+      if (desktopToc && ukTocHtml) {
+        var desktopList = desktopToc.querySelector(':scope > ul');
+        if (desktopList) desktopList.outerHTML = ukTocHtml;
+      }
 
-      document.querySelectorAll('.pagination-links a[rel="next"] span').forEach(function (el) {
-        if (el.firstChild && el.firstChild.nodeType === 3) {
-          el.firstChild.textContent = 'Далі';
-        }
+      var mobileList = document.querySelector('#starlight__mobile-toc .dropdown > ul');
+      if (mobileList && ukTocMobileHtml) {
+        mobileList.outerHTML = ukTocMobileHtml;
+      }
+
+      document.querySelectorAll('.opuscor-lang-select').forEach(function (select) {
+        if (select instanceof HTMLSelectElement) select.value = location.pathname + '?lang=uk';
       });
     })();
   </script>

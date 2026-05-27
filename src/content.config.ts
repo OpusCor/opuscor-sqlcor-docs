@@ -1,5 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { i18nLoader } from '@astrojs/starlight/loaders';
+import { i18nSchema } from '@astrojs/starlight/schema';
 
 // Per-document versioned documents. Read by the custom router
 // in src/pages/[version]/[...slug].astro. Starlight is not aware
@@ -25,4 +27,10 @@ const sqlcor = defineCollection({
   }),
 });
 
-export const collections = { sqlcor };
+/** Starlight UI string overrides (e.g. keep pagination in English on uk pages). */
+const i18n = defineCollection({
+  loader: i18nLoader(),
+  schema: i18nSchema(),
+});
+
+export const collections = { sqlcor, i18n };

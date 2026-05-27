@@ -1,0 +1,54 @@
+---
+/**
+ * Header language switcher — uses ?lang=uk for Ukrainian pages instead of
+ * Starlight's default /uk/ path prefix (see ADR-001 / custom document router).
+ */
+import Select from '@astrojs/starlight/components/Select.astro';
+
+const pathname = Astro.url.pathname.endsWith('/')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+
+const isUk = Astro.url.searchParams.get('lang') === 'uk';
+const enUrl = pathname;
+const ukUrl = `${pathname}?lang=uk`;
+---
+
+<starlight-lang-select>
+  <Select
+    icon="translate"
+    label={Astro.locals.t('languageSelect.accessibleLabel')}
+    options={[
+      { value: enUrl, selected: !isUk, label: 'English' },
+      { value: ukUrl, selected: isUk, label: 'Українська' },
+    ]}
+    width="7em"
+  />
+</starlight-lang-select>
+
+<script>
+  class StarlightLanguageSelect extends HTMLElement {
+    constructor() {
+      super();
+      const select = this.querySelector('select');
+      if (!select) return;
+
+      select.addEventListener('change', (event) => {
+        if (event.currentTarget instanceof HTMLSelectElement) {
+          window.location.href = event.currentTarget.value;
+        }
+      });
+
+      window.addEventListener('pageshow', (event) => {
+        if (!event.persisted) return;
+        const markupSelectedIndex =
+          select.querySelector<HTMLOptionElement>('option[selected]')?.index;
+        if (markupSelectedIndex !== select.selectedIndex) {
+          select.selectedIndex = markupSelectedIndex ?? 0;
+        }
+      });
+    }
+  }
+
+  customElements.define('starlight-lang-select', StarlightLanguageSelect);
+</script>

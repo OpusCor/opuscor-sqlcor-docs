@@ -2,8 +2,8 @@ import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
 import { useTranslations } from '@astrojs/starlight/internal';
 
 /**
- * Keeps Starlight chrome (TOC labels, pagination, language picker) in sync with
- * the per-page `?lang=uk` query param used by our custom document router.
+ * Sync Starlight chrome with the per-page `?lang=uk` query param used by
+ * our custom document router. Pagination stays English via src/content/i18n/uk.json.
  */
 export const onRequest = defineRouteMiddleware((context) => {
   if (context.url.searchParams.get('lang') !== 'uk') return;

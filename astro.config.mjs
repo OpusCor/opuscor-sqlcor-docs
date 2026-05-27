@@ -48,8 +48,9 @@ export default defineConfig({
       title: 'SQL Cor',
       description: 'Secure SQL Workbench for Creatio',
 
-      // English lives at unprefixed /v1.0/... routes; Ukrainian UI is also
-      // available via ?lang=uk (see starlight-route-middleware.ts).
+      // en + uk locales. English uses `root` so /v1.0/... URLs stay unprefixed.
+      // Ukrainian content is served via ?lang=uk (custom router + LanguageSelect).
+      // UI overrides (e.g. English pagination on uk pages): src/content/i18n/uk.json
       defaultLocale: 'root',
       locales: {
         root: {
@@ -76,9 +77,9 @@ export default defineConfig({
         Head: './src/components/Head.astro',
         SiteTitle: './src/components/SiteTitle.astro',
         Sidebar: './src/components/Sidebar.astro',
-        SidebarSublist: './src/components/SidebarSublist.astro',
         MobileTableOfContents: './src/components/MobileTableOfContents.astro',
         Search: './src/components/Search.astro',
+        LanguageSelect: './src/components/LanguageSelect.astro',
         Footer: './src/components/Footer.astro',
       },
 
