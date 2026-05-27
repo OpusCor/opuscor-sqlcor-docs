@@ -523,7 +523,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   width: 160px;
   height: 160px;
   background-color: var(--sl-color-accent);
-  opacity: 0.04;
+  opacity: 0.05;
   filter: blur(2px);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -533,7 +533,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   mask-size: contain;
   pointer-events: none;
   z-index: 0;
-  transition: opacity var(--opuscor-t-base);
+  transition: opacity 0.4s ease;
 }
 
 /* Apply icon mapping only to the landing page CardGrid order. */
@@ -576,6 +576,49 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 .opuscor-card > * {
   position: relative;
   z-index: 1;
+}
+
+/* Homepage "Browse the documentation" cleanup:
+   remove inline icon + chevron and tighten text placement. */
+.opuscor-card-grid > .opuscor-card .opuscor-card-icon,
+.opuscor-card-grid > .opuscor-card .opuscor-card-arrow,
+.opuscor-card-grid > .opuscor-card > svg:first-child,
+.opuscor-card-grid > .opuscor-card > svg:last-child {
+  display: none !important;
+}
+
+.opuscor-card-grid > .opuscor-card .opuscor-card-title {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  font-weight: 700;
+  color: var(--sl-color-white);
+}
+
+.opuscor-card-grid > .opuscor-card .opuscor-card-desc {
+  line-height: 1.65;
+}
+
+/* Premium hover interaction:
+   stronger ghost icon visibility + neon accent glow and lift. */
+.opuscor-card-grid > .opuscor-card {
+  transition:
+    transform 0.4s var(--opuscor-ease-premium),
+    box-shadow 0.4s var(--opuscor-ease-premium),
+    border-color 0.4s var(--opuscor-ease-premium);
+}
+
+.opuscor-card-grid > .opuscor-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--sl-color-accent-high);
+  box-shadow:
+    0 0 25px color-mix(in oklab, var(--sl-color-accent) 20%, transparent),
+    0 0 10px color-mix(in oklab, var(--sl-color-accent) 10%, transparent),
+    0 8px 18px color-mix(in oklab, var(--sl-color-black) 12%, transparent);
+  z-index: 2;
+}
+
+.opuscor-card-grid > .opuscor-card:hover::after {
+  opacity: 0.22;
 }
 
 /* ============================================================
