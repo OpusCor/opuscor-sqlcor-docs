@@ -492,7 +492,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 .opuscor-hero-actions .opuscor-btn--primary:hover::before,
 .opuscor-btn--primary.glow-border:hover::before {
   opacity: 1;
-  animation: btn-shimmer 1.4s var(--opuscor-ease-premium);
+  animation: btn-shimmer 2s var(--opuscor-ease-premium);
 }
 
 @keyframes rotate-border {
@@ -505,7 +505,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 }
 
 /* ============================================================
- * DOCUMENTATION CARDS — blurred accent icon wash
+ * DOCUMENTATION CARDS — ghost SVG backgrounds on landing grid
  * ============================================================ */
 .card,
 .opuscor-card {
@@ -518,27 +518,58 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 .opuscor-card::after {
   content: '';
   position: absolute;
-  right: -10%;
-  bottom: -22%;
-  width: clamp(160px, 58%, 300px);
-  height: clamp(160px, 58%, 300px);
-  background: radial-gradient(
-    circle at center,
-    var(--sl-color-accent) 0%,
-    color-mix(in oklab, var(--sl-color-accent) 55%, transparent) 38%,
-    transparent 72%
-  );
+  right: -20px;
+  bottom: -20px;
+  width: 160px;
+  height: 160px;
+  background-color: var(--sl-color-accent);
   opacity: 0.04;
-  filter: blur(40px);
+  filter: blur(2px);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
   pointer-events: none;
   z-index: 0;
-  transform: translate3d(0, 0, 0);
-  transition: opacity 1.2s var(--opuscor-ease-premium);
+  transition: opacity var(--opuscor-t-base);
 }
 
-.card:hover::after,
-.opuscor-card:hover::after {
-  opacity: 0.05;
+/* Apply icon mapping only to the landing page CardGrid order. */
+.opuscor-card-grid > .opuscor-card:nth-child(1)::after {
+  -webkit-mask-image: url('/card-ghosts/installation.svg');
+  mask-image: url('/card-ghosts/installation.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(2)::after {
+  -webkit-mask-image: url('/card-ghosts/user-guide.svg');
+  mask-image: url('/card-ghosts/user-guide.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(3)::after {
+  -webkit-mask-image: url('/card-ghosts/admin-guide.svg');
+  mask-image: url('/card-ghosts/admin-guide.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(4)::after {
+  -webkit-mask-image: url('/card-ghosts/feature-reference.svg');
+  mask-image: url('/card-ghosts/feature-reference.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(5)::after {
+  -webkit-mask-image: url('/card-ghosts/message-reference.svg');
+  mask-image: url('/card-ghosts/message-reference.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(6)::after {
+  -webkit-mask-image: url('/card-ghosts/shortcuts.svg');
+  mask-image: url('/card-ghosts/shortcuts.svg');
+}
+
+.opuscor-card-grid > .opuscor-card:nth-child(7)::after {
+  -webkit-mask-image: url('/card-ghosts/troubleshooting.svg');
+  mask-image: url('/card-ghosts/troubleshooting.svg');
 }
 
 .card > *,
@@ -554,7 +585,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   display: inline-block;
   color: var(--sl-color-accent);
   margin: 0 0.5rem;
-  animation: heart-beat 3.5s var(--opuscor-ease-premium) infinite;
+  animation: heart-beat 4s var(--opuscor-ease-premium) infinite;
   filter: drop-shadow(0 0 0 transparent);
 }
 
@@ -612,4 +643,18 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
 :root[data-theme='light'] .sl-markdown-content p:has(> img[src*="-dark."]:only-child) {
   display: none !important;
   margin: 0 !important;
+}
+
+/* ============================================================
+ * TOC / Anchor tracking reliability for all locales (incl. Cyrillic)
+ * ============================================================ */
+.sl-markdown-content h2,
+.sl-markdown-content h3 {
+  scroll-margin-top: calc(var(--sl-nav-height) + 3rem);
+}
+
+.right-sidebar a[aria-current='true'] {
+  color: var(--sl-color-accent-high);
+  border-left: 2px solid var(--sl-color-accent);
+  padding-left: calc(var(--sl-sidebar-pad-x) - 2px);
 }

@@ -62,6 +62,9 @@ export default defineConfig({
           lang: 'uk',
         },
       },
+      // Keep pagination labels in English for `uk` via src/content/i18n/uk.json.
+      // Starlight uses Unicode-safe heading slugs, so Cyrillic IDs stay intact.
+      // No extra slug config is required; TOC tracking is handled via CSS offsets.
 
       pagination: true,
 
