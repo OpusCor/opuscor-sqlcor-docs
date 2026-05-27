@@ -48,6 +48,24 @@ export default defineConfig({
       title: 'SQL Cor',
       description: 'Secure SQL Workbench for Creatio',
 
+      // English lives at unprefixed /v1.0/... routes; Ukrainian UI is also
+      // available via ?lang=uk (see starlight-route-middleware.ts).
+      defaultLocale: 'root',
+      locales: {
+        root: {
+          label: 'English',
+          lang: 'en',
+        },
+        uk: {
+          label: 'Українська',
+          lang: 'uk',
+        },
+      },
+
+      pagination: true,
+
+      routeMiddleware: './src/starlight-route-middleware.ts',
+
       customCss: [
         './src/styles/tokens.css',
         './src/styles/starlight-overrides.css',

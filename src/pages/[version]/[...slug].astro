@@ -118,8 +118,26 @@ const defaultActiveLang = activeLang;
   <script is:inline>
     (function () {
       if (new URLSearchParams(location.search).get('lang') !== 'uk') return;
+
       document.querySelectorAll('[data-opuscor-lang]').forEach(function (el) {
         el.hidden = el.getAttribute('data-opuscor-lang') !== 'uk';
+      });
+
+      document.documentElement.lang = 'uk';
+
+      var tocHeading = document.getElementById('starlight__on-this-page');
+      if (tocHeading) tocHeading.textContent = 'На цій сторінці';
+
+      document.querySelectorAll('.pagination-links a[rel="prev"] span').forEach(function (el) {
+        if (el.firstChild && el.firstChild.nodeType === 3) {
+          el.firstChild.textContent = 'Назад';
+        }
+      });
+
+      document.querySelectorAll('.pagination-links a[rel="next"] span').forEach(function (el) {
+        if (el.firstChild && el.firstChild.nodeType === 3) {
+          el.firstChild.textContent = 'Далі';
+        }
       });
     })();
   </script>

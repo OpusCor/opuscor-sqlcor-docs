@@ -408,9 +408,15 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   inherits: false;
 }
 
+@property --shimmer-x {
+  syntax: '<percentage>';
+  initial-value: -120%;
+  inherits: false;
+}
+
 .glow-border {
   position: relative;
-  /* This ensures the gradient border stays inside the rounded corners */
+  overflow: hidden;
   border: 2px solid transparent;
   --glow-angle: 0deg;
   background-image: var(--opuscor-grad-brand),
@@ -418,10 +424,127 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   background-origin: border-box;
   background-clip: padding-box, border-box;
   animation: rotate-border 3s linear infinite;
+  transition:
+    transform 320ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 65%
+  );
+  transform: translateX(var(--shimmer-x, -120%));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.opuscor-btn--primary.glow-border {
+  background-image: linear-gradient(135deg, var(--sl-color-accent-high) 0%, var(--sl-color-accent) 45%, var(--opuscor-accent-2) 100%),
+                    conic-gradient(from var(--glow-angle), #ff0055, #ffcc00, #33ff00, #00ffff, #3300ff, #ff0055);
+}
+
+.opuscor-hero-actions .opuscor-btn--primary:hover,
+.opuscor-btn--primary.glow-border:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 28px color-mix(in oklab, var(--sl-color-accent) 35%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--sl-color-accent) 25%, transparent);
+  filter: brightness(1.06);
+}
+
+.opuscor-hero-actions .opuscor-btn--primary:hover::before,
+.opuscor-btn--primary.glow-border:hover::before {
+  opacity: 1;
+  animation: btn-shimmer 900ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @keyframes rotate-border {
   to { --glow-angle: 360deg; }
+}
+
+@keyframes btn-shimmer {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(120%); }
+}
+
+/* ============================================================
+ * DOCUMENTATION CARDS — decorative accent wash
+ * ============================================================ */
+.opuscor-card,
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.opuscor-card::after,
+.card::after {
+  content: '';
+  position: absolute;
+  right: -12%;
+  bottom: -18%;
+  width: min(220px, 70%);
+  height: min(220px, 70%);
+  background: radial-gradient(
+    circle at center,
+    color-mix(in oklab, var(--sl-color-accent) 18%, transparent) 0%,
+    transparent 72%
+  );
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.opuscor-card:hover::after,
+.card:hover::after {
+  opacity: 0.1;
+}
+
+.opuscor-card > *,
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+ * FOOTER HEARTBEAT
+ * ============================================================ */
+.dn-heart {
+  display: inline-block;
+  color: var(--opuscor-accent);
+  margin: 0 0.5rem;
+  animation: heart-beat 1.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+@keyframes heart-beat {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  14% {
+    transform: scale(1.45);
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.55));
+  }
+  28% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.25));
+  }
+  42% {
+    transform: scale(1.35);
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.45));
+  }
+  70% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
 }
 
 /* If the button looks broken after this, simply remove the .glow-border class
