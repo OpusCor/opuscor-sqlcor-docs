@@ -257,6 +257,31 @@ kbd {
   border-color: var(--opuscor-accent);
 }
 
+/* Hide global header language selector.
+   Per-page language links ("Read this page in...") stay available in docs. */
+.header starlight-lang-select {
+  display: none !important;
+}
+
+/* Keep header controls aligned after removing language picker. */
+.header .right-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.header .right-group .social-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.header .right-group starlight-theme-select,
+.header .right-group site-search {
+  display: flex !important;
+  align-items: center;
+}
+
 /* ============================================================
  * BRAND LOGO (used in Header override)
  * ============================================================ */
@@ -591,7 +616,7 @@ dialog[aria-label='Search'] .pagefind-ui__search-input {
   margin-top: 0 !important;
   padding-top: 0 !important;
   font-weight: 700;
-  color: var(--sl-color-white);
+  color: var(--sl-color-text);
 }
 
 .opuscor-card-grid > .opuscor-card .opuscor-card-desc {
