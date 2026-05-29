@@ -257,9 +257,9 @@ kbd {
   border-color: var(--opuscor-accent);
 }
 
-/* Hide global header language selector.
-   Per-page language links ("Read this page in...") stay available in docs. */
-.header starlight-lang-select {
+/* Hide Starlight locale picker everywhere (desktop header + mobile menu).
+   Per-page switcher (.opuscor-lang-select) and doc links stay available. */
+starlight-lang-select {
   display: none !important;
 }
 
@@ -280,6 +280,28 @@ kbd {
 .header .right-group site-search {
   display: flex !important;
   align-items: center;
+}
+
+/* Mobile sidebar footer (MobileMenuFooter): theme only, no locale picker gap */
+.mobile-preferences {
+  justify-content: center;
+  align-items: center;
+  column-gap: 0;
+  padding-block: 0.75rem;
+}
+
+.mobile-preferences .social-icons {
+  margin-inline-end: 0;
+  padding-block: 0.5rem;
+}
+
+/* Social icons on the start edge; theme switcher centered in the row */
+.mobile-preferences:has(.social-icons:not(:empty)) {
+  justify-content: flex-start;
+}
+
+.mobile-preferences:has(.social-icons:not(:empty)) starlight-theme-select {
+  margin-inline: auto;
 }
 
 /* ============================================================
